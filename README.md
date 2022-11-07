@@ -1,5 +1,5 @@
 # C - BUILD YOUR OWN SHELL
-## Introduction:
+## Introduction: :ledger:
 * One of the core tenets of the ALX SE program is the belef in ding hard things and now, they have presented us with another hard thing
 * The mission of this current task is to build a shell that will work as good as any bash shell or even better
 * As usual, there are restraints and constraints on the number and type of functions we're allowed to use but the fact that we're working in teams of two means that we have more info and resources to use
@@ -28,6 +28,7 @@ It contains all the header files we should have been constantly declaring to uss
 
 * ### _Files with a program as a target_ :page_with_curl:
 |**FILE**|**PROGRAM FUNCTION**|
+|:---|:---:|
 |[main.c](./main.c)|It is the entry point for the shell|
 
 ## See Also
@@ -35,12 +36,14 @@ It contains all the header files we should have been constantly declaring to uss
   <summary>Please click this arrow for compilation instructions</summary>
 
   * Use **_gcc *.c -o hsh_** to compile
+  * THen run **./hsh**
   * Ignore any .swo, .swp and any other file that is not an executable, C or header file
   * This shell is experimental meaning that you use at your own risk
+</details>
 
 ## AUTHORS
-**Ugwuanyi Afam** alias **2022phyro**
-	20222phyro@github.com
+**Ugwuanyi Afam** alias **Phyro Kelstein** :stuck_out_tongue_winking_eye::v:
+* To view my github, click [here](github.com/20222phyro)
 
-**David John** alias **Dave Mcsavvy**
-	Mcsavvy@github.com
+**David John** alias **Dave Mcsavvy** :sunglasses::ok_hand:
+* To view my github, click [here](github.com/Mcsavvy)
