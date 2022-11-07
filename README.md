@@ -43,7 +43,7 @@ It contains all the header files we should have been constantly declaring to uss
 
 ## AUTHORS
 **Ugwuanyi Afam** alias **Phyro Kelstein** :stuck_out_tongue_winking_eye::v:
-* To view my github, click [here](github.com/20222phyro)
+* To view my github, click [here](https://github.com/20222phyro)
 
 **David John** alias **Dave Mcsavvy** :sunglasses::ok_hand:
-* To view my github, click [here](github.com/Mcsavvy)
+* To view my github, click [here](https://github.com/Mcsavvy)
