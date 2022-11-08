@@ -20,12 +20,6 @@ extern char **environ;
 
 /* quote */
 int findquote(char *str, char quote);
-int parsequote(
-	char *string,
-	int *index,
-	char **buffer,
-	size_t *buf_size,
-	int *buf_index);
 
 /* line */
 char *getLine(void);
