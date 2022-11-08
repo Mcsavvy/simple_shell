@@ -12,7 +12,7 @@
 int main(int ac, char **av, char **env)
 {
 	char *line, **tokens, *command, **arguments, *program, *PATH;
-	int i, t, quit;
+	int i, quit, t;
 
 	PATH = findenv(env, "PATH");
 	quit = 0;
@@ -40,12 +40,10 @@ int main(int ac, char **av, char **env)
 				printf("%s: %d: %s: not found\n", av[0], i, command);
 			else
 				execute(program, arguments);
+			free(program);
 		}
-		for (t = 0; tokens[t]; t++)
-			free(tokens[t]);
-		free(tokens);
+		printf("\n");
 		free(line);
-		free(program);
 		if (quit)
 			break;
 	}

@@ -44,22 +44,6 @@ char *getLine(void)
 	return (buffer);
 }
 
-/**
- * skipTrailingWhiteSpace - skips whitespace during tokenization
- *
- * @string: the string being parsed
- * @index: a pointer to the index position in the string
- *
- * Return: 1 if whitespace was found and skipped, else 0
- */
-int skipTrailingWhiteSpace(char *string, int *index)
-{
-	if (string[*index] != ' ' && string[*index] != '\t')
-		return (0);
-	while (string[*index] == ' ' || string[*index] == '\t')
-		*index = *index + 1;
-	return (1);
-}
 
 /**
  * tokenizeLine - split a line into separate words
@@ -68,39 +52,39 @@ int skipTrailingWhiteSpace(char *string, int *index)
  */
 char **tokenizeLine(char *line)
 {
-	char **array, *buffer, c;
-	size_t arr_size, buf_size;
-	int arr_index, buf_index, index;
+	char **array, c, temp;
+	size_t arr_size;
+	int arr_index, line_index, next_quote_index;
 
 	if (!(line && *line))
 		return (NULL);
 
-	index = arr_index = 0; /* line index */
+	line_index = arr_index = 0; /* line index */
 	arr_size = 4;
 	array = malloc(arr_size * sizeof(char *));
+	temp = '\0';
 
-	while (line && line[index])
+	for (line_index = 0; line && line[line_index]; line_index++)
 	{
-		buf_size = 16;
-		buf_index = 0;
-		buffer = malloc(buf_size * sizeof(char));
+		c = line[line_index];
 
-		for (; line[index]; index++)
+		if ((c == '\'' || c == '"') && temp != '\\')
 		{
-			c = line[index];
-			if (skipTrailingWhiteSpace(line, &index))
-				break;
-			if (parsequote(line, &index, &buffer, &buf_size, &buf_index))
-				break;
-			appendChar(&buffer, &buf_size, c, buf_index++);
+			if (temp == '\0')
+				appendStr(&array, &arr_size, &line[line_index], arr_index++);
+			next_quote_index = findquote(&line[line_index + 1], c);
+			printf("next quote index: %d\n", next_quote_index);
+			if (next_quote_index == -1)
+			{}
+			else
+				line_index += next_quote_index;
 		}
-		if (buf_index == 0)
-		{
-			free(buffer);
-			continue;
-		}
-		appendChar(&buffer, &buf_size, '\0', buf_index++);
-		appendStr(&array, &arr_size, buffer, arr_index++);
+		else if (c == ' ' || c == '\t')
+			line[line_index] = '\0';
+		else 
+			if (temp == '\0')
+				appendStr(&array, &arr_size, &line[line_index], arr_index++);
+		temp = line[line_index];
 	}
 	appendStr(&array, &arr_size, NULL, arr_index);
 	return (array);
