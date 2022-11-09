@@ -73,9 +73,9 @@ int _atoi(char *s);
 int shellexit(char *s, char *arg);
 
 /*environmental variables*/
-int _env(char *env[]);
+int _env(node *env);
 char *token(char *c);
-int _setenv(char *name, char *value, char *env[]);
-int _unsetenv(char *name, char *env[]);
+int _setenv(char *name, char *value, node **env);
+int _unsetenv(char *name, node **env);
 
 #endif

@@ -11,9 +11,11 @@
 int main(int ac, char **av, char **env)
 {
 	char *line, **tokens, *command, **arguments, *program, *PATH;
-	int i, t, status, quit;
+	int i, quit;
+	node *envs;
 
 	PATH = findenv(env, "PATH");
+	envs = from_strarr(env);
 	(void)ac;
 	for (i = 1; 1; i++)
 	{
@@ -31,12 +33,11 @@ int main(int ac, char **av, char **env)
 		arguments = &tokens[1];
 
 		if (strcmp(command, "env") == 0)
-			_env(env);
+			_env(envs);
 		if (strcmp(command, "setenv") == 0)
-			_setenv(*(arguments), (*(arguments) + 1), environ);
+			_setenv(*(arguments), *(arguments + 1), &envs);
 		if (strcmp(command, "unsetenv") == 0)
-			_unsetenv(*(arguments), environ);
-
+			_unsetenv(*(arguments), &envs);
 		quit = shellexit(command, *(arguments));
 		if (quit != -1)
 			break;
