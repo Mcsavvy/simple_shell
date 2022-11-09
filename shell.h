@@ -64,4 +64,10 @@ int execute(const char *program, char *args[]);
 int appendStr(char ***arr, size_t *size, char *str, int index);
 int appendChar(char **string, size_t *size, char chr, int index);
 
+/*atoi*/
+int checkatoi(char *s);
+int _atoi(char *s);
+
+/*exit*/
+int shellexit(char *s, char *arg);
 #endif

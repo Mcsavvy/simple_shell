@@ -1,5 +1,4 @@
 #include "shell.h"
-
 /**
  * main - entry point
  *
@@ -12,10 +11,9 @@
 int main(int ac, char **av, char **env)
 {
 	char *line, **tokens, *command, **arguments, *program, *PATH;
-	int i, quit, t;
+	int i, t, status, quit;
 
 	PATH = findenv(env, "PATH");
-	quit = 0;
 	(void)ac;
 	for (i = 1; 1; i++)
 	{
@@ -31,22 +29,22 @@ int main(int ac, char **av, char **env)
 			continue;
 		command = tokens[0];
 		arguments = &tokens[1];
-		if (!strcmp(command, "exit"))
-			quit = 1;
+
+		quit = shellexit(command, *(arguments));
+		if (quit != -1)
+			break;
+		program = findcmd(command, PATH);
+		if (!program)
+			printf("%s: %d: %s: not found\n", av[0], i, command);
 		else
 		{
-			program = findcmd(command, PATH);
-			if (!program)
-				printf("%s: %d: %s: not found\n", av[0], i, command);
-			else
-				execute(program, arguments);
-			free(program);
+			execute(program, arguments);
+		free(program);
 		}
 		printf("\n");
 		free(line);
-		if (quit)
-			break;
 	}
+
 	free(PATH);
-	return (0);
+	return (quit);
 }
