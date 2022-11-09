@@ -61,8 +61,9 @@ char *joinpath(const char *base, const char *child);
 int execute(const char *program, char *args[]);
 
 /* append */
-int appendStr(char ***arr, size_t *size, char *str, int index);
-int appendChar(char **string, size_t *size, char chr, int index);
+bool appendStr(char ***arr, size_t *size, char *str, int index);
+bool appendChar(char **string, size_t *size, char chr, int index);
+bool appendInt(char **string, size_t *size, int num, int index);
 
 /*atoi*/
 int checkatoi(char *s);
@@ -70,4 +71,7 @@ int _atoi(char *s);
 
 /*exit*/
 int shellexit(char *s, char *arg);
+
+/* format */
+char *format(const char *fmt, ...);
 #endif
