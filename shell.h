@@ -16,6 +16,7 @@
 #include <signal.h>
 #include <string.h>
 #include "list.h"
+#include "strings.h"
 
 extern char **environ;
 
@@ -70,4 +71,11 @@ int _atoi(char *s);
 
 /*exit*/
 int shellexit(char *s, char *arg);
+
+/*environmental variables*/
+int _env(char *env[]);
+char *token(char *c);
+int _setenv(char *name, char *value, char *env[]);
+int _unsetenv(char *name, char *env[]);
+
 #endif

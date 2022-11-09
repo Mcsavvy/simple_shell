@@ -30,6 +30,13 @@ int main(int ac, char **av, char **env)
 		command = tokens[0];
 		arguments = &tokens[1];
 
+		if (strcmp(command, "env") == 0)
+			_env(env);
+		if (strcmp(command, "setenv") == 0)
+			_setenv(*(arguments), *(arguments + 1), environ);
+		if (strcmp(command, "unsetenv") == 0)
+			_unsetenv(*(arguments), environ);
+
 		quit = shellexit(command, *(arguments));
 		if (quit != -1)
 			break;
