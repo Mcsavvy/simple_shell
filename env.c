@@ -14,6 +14,18 @@ int _env(char *env[])
 	return (0);
 
 }
+char *joiner(char *sr, char *dest)
+{
+	int i, j;
+
+	for (i = 0; sr[i] != '\0'; i++);
+	sr[i] = '=';
+	i++;
+	for(j = 0; dest[j] != '\0'; j++)
+		sr[i] = dest[j];
+	return(sr);
+		
+}
 /**
  * token - crate an array of strings
  *
@@ -48,13 +60,11 @@ int _setenv(char *name, char *value, char *env[])
 		buffer = token(env[i]);
 		if (_strcmp(buffer, name) == 0)
 		{
-			env[i] = _strcat(name, "=");
-			env[i] = _strcat(env[i], "value");
+			env[i] = joiner(name, value);
 			return (0);
 		}
 	}
-	env[i] = _strcat(name, "=");
-	env[i] = _strcat(env[i], "value");
+	env[i] = joiner(name, value);
 	i++;
 	env[i] = NULL;
 	return (0);

@@ -33,7 +33,7 @@ int main(int ac, char **av, char **env)
 		if (strcmp(command, "env") == 0)
 			_env(env);
 		if (strcmp(command, "setenv") == 0)
-			_setenv(*(arguments), *(arguments + 1), environ);
+			_setenv(*(arguments), (*(arguments) + 1), environ);
 		if (strcmp(command, "unsetenv") == 0)
 			_unsetenv(*(arguments), environ);
 
