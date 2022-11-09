@@ -54,7 +54,7 @@ bool delete_node(node **head, const char *var)
 
 	while (target)
 	{
-		if (!strcmp(target->var, var))
+		if (!_strcmp(target->var, var))
 			break;
 		temp = target;
 		target = target->next;
@@ -141,7 +141,7 @@ char **to_strarr(node *head)
 
 	while (n)
 	{
-		buf_size = 2 + strlen(n->var) + strlen(n->val);
+		buf_size = 2 + _strlen(n->var) + _strlen(n->val);
 		buffer = malloc(buf_size * sizeof(char));
 		buf_ind = 0;
 

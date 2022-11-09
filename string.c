@@ -16,7 +16,7 @@ int _putchar(char c)
  * @s: the string to be checked
  * Return: The lenght of the string
  */
-int _strlen(char *s)
+int _strlen(const char *s)
 {
 	int i, lenght;
 
@@ -34,7 +34,7 @@ int _strlen(char *s)
  * @str: the string to be checked
  * Return: Nothing
  */
-void _puts(char *str)
+void _puts(const char *str)
 {
 	int i;
 
@@ -49,7 +49,7 @@ void _puts(char *str)
  * Description:'A function'
  * Return: j if successful
  */
-int _strcmp(char *s1, char *s2)
+int _strcmp(const char *s1, const char *s2)
 {
 	int i, j;
 
@@ -72,7 +72,7 @@ int _strcmp(char *s1, char *s2)
  * @dest: the destination
  * Return: 'dest' if successful
  */
-char *_strcat(char *dest, char *src)
+char *_strcat(char *dest, const char *src)
 {
 	int i, j;
 

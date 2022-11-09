@@ -18,7 +18,7 @@ char *findenv(char *env[], const char *name)
 	{
 		var = strdup(env[i]);
 		key = strtok(var, "=");
-		if (!strcmp(key, name))
+		if (!_strcmp(key, name))
 		{
 			val = strdup(strtok(NULL, ""));
 			free(var);
@@ -45,7 +45,7 @@ struct dirent *findfile(DIR *dir, const char *filename)
 	file = readdir(dir);
 	while (file != NULL)
 	{
-		if (strcmp(filename, file->d_name) == 0)
+		if (_strcmp(filename, file->d_name) == 0)
 			break;
 		file = readdir(dir);
 	}

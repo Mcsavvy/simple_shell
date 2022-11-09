@@ -16,7 +16,7 @@ bool runbuiltin(state **global, char **arguments)
 
 	for (i = 0; builtins[i].name; i++)
 	{
-		if (!strcmp(builtins[i].name, command))
+		if (!_strcmp(builtins[i].name, command))
 		{
 			status = builtins[i].handler(global, args);
 			self->_errno = status;
@@ -57,7 +57,7 @@ int interactive(state **global)
 				"%s: %d: %s: not found",
 				self->prog, self->lineno, self->arguments[0]
 			);
-			write(STDERR_FILENO, error, strlen(error));
+			write(STDERR_FILENO, error, _strlen(error));
 			free(error);
 			write(STDOUT_FILENO, "\n", 1);
 			self->_errno = EKEYEXPIRED;

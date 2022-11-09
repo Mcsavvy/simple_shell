@@ -114,7 +114,7 @@ node *get_node(node *head, const char *var)
 {
 	if (!head)
 		return (NULL);
-	if (!strcmp(head->var, var))
+	if (!_strcmp(head->var, var))
 		return (head);
 	return (get_node(head->next, var));
 }
