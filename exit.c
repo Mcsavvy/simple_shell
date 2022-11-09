@@ -6,25 +6,29 @@
  * @arg: the exit value
  * Return: the exit value
  */
-int shellexit(char *s, char *arg)
+exit_status shellexit(state **self, char **arguments)
 {
-	int value;
+	exit_status status = 0;
+	char *arg = arguments[0];
+	char *error = NULL;
 
-	value = 0;
-
-	if ((strcmp(s, "exit") != 0))
-		return (-1);
 	if (arg == NULL)
-		return (value);
-	if (checkatoi(s) == -1)
 	{
-		printf("Error: exit takes a numeric argument\n");
-		return (0);
+		deinit(self);
+		exit(0);
+	}
+	if (checkatoi(arg) == false)
+	{
+		error = format(
+			"%s: %d: exit: Illegal number: %s\n",
+			(*self)->prog, (*self)->lineno, arg
+		);
+		write(STDERR_FILENO, error, strlen(error));
+		free(error);
+		return (2);
 	}
 	else
-	{
-		value = atoi(arg);
-	}
-	return (value);
+		status = atoi(arg);
+	deinit(self);
+	exit(status);
 }
-

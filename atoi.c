@@ -4,21 +4,21 @@
  * checkatoi - checks if a string can be turned into numbers
  * Description:'A funciton'
  * @s: the string to be checked
- * Return: 1, success, -1 failure
+ * Return: bool; true (1) if string can be converted else false(0)
  */
-int checkatoi(char *s)
+bool checkatoi(char *s)
 {
-	int i;
+	int i = 0;
 
-	i = 0;
 	while (s[i] != '\0')
 	{
-		if (!(s[i] >= '0' || s[i] <= '9'))
-			return (-1);
+		if (!(s[i] >= '0' && s[i] <= '9'))
+			return (false);
 		i++;
 	}
-	return (i);
+	return (true);
 }
+
 /**
  * _atoi - converts a string into an integer
  * Description;'A function'

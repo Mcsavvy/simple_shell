@@ -19,6 +19,9 @@
 #include "strings.h"
 
 extern char **environ;
+typedef int exit_status;
+typedef struct state state;
+typedef struct builtin builtin;
 
 /**
  * struct state - useful variables that would be passed
@@ -39,11 +42,23 @@ struct state
 	node *env;
 	node *aliases;
 	char *line;
+	char **arguments;
 	int lineno;
 	int _errno;
 };
 
-typedef struct state state;
+/**
+ * struct builtin - a shell builtin
+ * 
+ * @name: the name of the builtin
+ * @handler: a function that handles the builtin command
+ */
+struct builtin
+{
+	char *name;
+	exit_status (*handler)(state **self, char **arguments);
+};
+
 
 /* quote */
 int findquote(char *str, char quote);
@@ -60,6 +75,7 @@ char *joinpath(const char *base, const char *child);
 
 /* run */
 int execute(const char *program, char *args[]);
+int interactive(state **self);
 
 /* append */
 bool appendStr(char ***arr, size_t *size, char *str, int index);
@@ -71,7 +87,7 @@ int checkatoi(char *s);
 int _atoi(char *s);
 
 /*exit*/
-int shellexit(char *s, char *arg);
+int shellexit(state **s, char **arguments);
 
 /* format */
 char *format(const char *fmt, ...);
@@ -82,4 +98,8 @@ char *token(char *c);
 int _setenv(char *name, char *value, node **env);
 int _unsetenv(char *name, node **env);
 
+/* main */
+state *init(char *prog, char **env);
+void deinit(state **global);
+void cleanup(state *self);
 #endif
