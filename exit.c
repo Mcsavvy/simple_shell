@@ -23,7 +23,7 @@ exit_status shellexit(state **self, char **arguments)
 			"%s: %d: exit: Illegal number: %s\n",
 			(*self)->prog, (*self)->lineno, arg
 		);
-		write(STDERR_FILENO, error, strlen(error));
+		write(STDERR_FILENO, error, _strlen(error));
 		free(error);
 		return (2);
 	}
