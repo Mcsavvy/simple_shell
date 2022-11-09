@@ -31,5 +31,6 @@ node *get_node(node *head, const char *var);
 bool delete_node(node **head, const char *var);
 node *from_strarr(char **array);
 char **to_strarr(node *head);
+node *set_node(node **head, const char *var, const char *val);
 
 #endif

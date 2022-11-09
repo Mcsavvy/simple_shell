@@ -16,6 +16,7 @@
 #include <signal.h>
 #include <string.h>
 #include "list.h"
+#include "strings.h"
 
 extern char **environ;
 
@@ -74,4 +75,11 @@ int shellexit(char *s, char *arg);
 
 /* format */
 char *format(const char *fmt, ...);
+
+/*environmental variables*/
+int _env(node *env);
+char *token(char *c);
+int _setenv(char *name, char *value, node **env);
+int _unsetenv(char *name, node **env);
+
 #endif
