@@ -15,8 +15,34 @@
 #include <unistd.h>
 #include <signal.h>
 #include <string.h>
+#include "list.h"
 
 extern char **environ;
+
+/**
+ * struct state - useful variables that would be passed
+ * around from the main function.
+ *
+ * @env: shell environment variables
+ * @aliases: shell aliases
+ * @line: the current line of command being parsed
+ * @_errno: a number indicating the error of the last command ran
+ * @lineno: the current line number
+ * @prog: the program name used to start the shell
+ * @pid: the process ID of the shell
+ */
+struct state
+{
+	pid_t pid;
+	char *prog;
+	node *env;
+	node *aliases;
+	char *line;
+	int lineno;
+	int _errno;
+};
+
+typedef struct state state;
 
 /* quote */
 int findquote(char *str, char quote);

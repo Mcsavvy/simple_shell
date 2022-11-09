@@ -67,8 +67,10 @@ char *joinpath(const char *base, const char *child)
 {
 	char *newpath;
 	int baselen, childlen, i, index;
+	bool has_sep;
 
 	baselen = childlen = index = 0;
+	has_sep = false;
 
 	if (!(base && child))
 		return (NULL);
@@ -78,15 +80,20 @@ char *joinpath(const char *base, const char *child)
 	while (child[childlen] != '\0')
 		childlen++;
 
-	/* the extra two bytes are for the nullbyte and the forward slash */
-	newpath = malloc(baselen + childlen + 2);
+	if (base[baselen - 1] == '/' || child[0] == '/')
+		has_sep = true;
+
+	newpath = malloc(
+		/* create space for a nullbyte and space for the / */
+		baselen + childlen + 1 + has_sep ? 0 : 1
+	);
 
 	for (i = 0; i < baselen; i++)
 	{
 		newpath[index] = base[i];
 		index++;
 	}
-	if (base[baselen - 1] != '/' && child[0] != '/')
+	if (!has_sep)
 	{
 		newpath[index] = '/';
 		index++;
