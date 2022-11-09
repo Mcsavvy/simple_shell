@@ -81,7 +81,7 @@ char **tokenizeLine(char *line)
 		}
 		else if (c == ' ' || c == '\t')
 			line[line_index] = '\0';
-		else 
+		else
 			if (temp == '\0')
 				appendStr(&array, &arr_size, &line[line_index], arr_index++);
 		temp = line[line_index];
