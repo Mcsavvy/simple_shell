@@ -74,8 +74,8 @@ struct dirent *findfile(DIR *dir, const char *filename);
 char *joinpath(const char *base, const char *child);
 
 /* run */
-int execute(const char *program, char *args[]);
 int interactive(state **self);
+int execute(const char *program, char *args[], char *env[]);
 
 /* append */
 bool appendStr(char ***arr, size_t *size, char *str, int index);
