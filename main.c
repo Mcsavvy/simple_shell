@@ -32,8 +32,8 @@ int main(int ac, char **av, char **env)
 		command = tokens[0];
 		arguments = &tokens[1];
 
-		if (strcmp(command, "env") == 0)
-			_env(envs);
+/*		if (strcmp(command, "env") == 0)
+			_env(envs);*/
 		if (strcmp(command, "setenv") == 0)
 			_setenv(*(arguments), *(arguments + 1), &envs);
 		if (strcmp(command, "unsetenv") == 0)
@@ -46,7 +46,7 @@ int main(int ac, char **av, char **env)
 			printf("%s: %d: %s: not found\n", av[0], i, command);
 		else
 		{
-			execute(program, arguments);
+			execute(program, tokens, env);
 		free(program);
 		}
 		printf("\n");
