@@ -15,7 +15,7 @@ It contains all the header files we should have been constantly declaring to uss
  <details>
   <summary>It contains other header files that were used in declaring</summary>
 
-  * [builtin,h](./headers/builtin.h) :scroll: </br>
+  * [builtin.h](./headers/builtin.h) :scroll: </br>
     Contains the header prototypes for the builtins
   * [include.h](./headers/include.h) :scroll: </br>
     Contains the struct for the node type and the C header files
@@ -23,7 +23,7 @@ It contains all the header files we should have been constantly declaring to uss
     Contains the prototpyes for the functions that find the environmental path
   * [string.h](./headers/string.h) :scroll: </br>
     Contains prototypes for the string functions
-<details>
+</details>
 
 ## Contents
 * ### Files which are sourcefiles for the codes :page_facing_up:
