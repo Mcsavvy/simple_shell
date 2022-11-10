@@ -1,7 +1,37 @@
 #include "shell.h"
 #include <stdarg.h>
 
+/**
+ * printerr - print an error message to stderr
+ *
+ * @message: the message to print
+ *
+ * Return: nothing
+ */
+void printerr(const char *message)
+{
+	write(STDERR_FILENO, message, _strlen(message));
+}
 
+/**
+ * printout - prints a message to stdout
+ *
+ * @message: the message to print
+ *
+ * Return: nothing
+ */
+void printout(const char *message)
+{
+	write(STDOUT_FILENO, message, _strlen(message));
+}
+
+
+/**
+ * format - resolves format specifiers in a string
+ * @fmt: the format string
+ * Return: a new string with format specifiers replaced
+ * with actual value
+ */
 char *format(const char *fmt, ...)
 {
 	char *buffer, chr, nxt, *s;
@@ -23,7 +53,7 @@ char *format(const char *fmt, ...)
 	{
 		chr = fmt[index];
 		nxt = fmt[index + 1];
-	
+
 		if (chr == '%')
 		{
 			if (nxt == 'd')

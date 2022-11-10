@@ -4,61 +4,17 @@
 #define true 1
 #define false 0
 
-#include <errno.h>
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <dirent.h>
-#include <unistd.h>
-#include <signal.h>
-#include <string.h>
-#include "list.h"
-#include "strings.h"
+#include "headers/include.h"
+#include "headers/list.h"
+#include "headers/string.h"
+#include "headers/builtin.h"
+#include "headers/path.h"
 
 extern char **environ;
-typedef int exit_status;
-typedef struct state state;
-typedef struct builtin builtin;
 
-/**
- * struct state - useful variables that would be passed
- * around from the main function.
- *
- * @env: shell environment variables
- * @aliases: shell aliases
- * @line: the current line of command being parsed
- * @_errno: a number indicating the error of the last command ran
- * @lineno: the current line number
- * @prog: the program name used to start the shell
- * @pid: the process ID of the shell
- */
-struct state
-{
-	pid_t pid;
-	char *prog;
-	node *env;
-	node *aliases;
-	char *line;
-	char **arguments;
-	int lineno;
-	int _errno;
-};
-
-/**
- * struct builtin - a shell builtin
- * 
- * @name: the name of the builtin
- * @handler: a function that handles the builtin command
- */
-struct builtin
-{
-	char *name;
-	exit_status (*handler)(state **self, char **arguments);
-};
-
+/* io */
+void printerr(const char *message);
+void printout(const char *message);
 
 /* quote */
 int findquote(char *str, char quote);
@@ -74,8 +30,8 @@ struct dirent *findfile(DIR *dir, const char *filename);
 char *joinpath(const char *base, const char *child);
 
 /* run */
-int interactive(state **self);
-int execute(const char *program, char *args[], char *env[]);
+int interactive(state *self);
+int execute(const char *program, char **args, char **env);
 
 /* append */
 bool appendStr(char ***arr, size_t *size, char *str, int index);
@@ -86,20 +42,14 @@ bool appendInt(char **string, size_t *size, int num, int index);
 int checkatoi(char *s);
 int _atoi(char *s);
 
-/*exit*/
-int shellexit(state **s, char **arguments);
 
 /* format */
 char *format(const char *fmt, ...);
 
-/*environmental variables*/
-int _env(node *env);
-char *token(char *c);
-int _setenv(char *name, char *value, node **env);
-int _unsetenv(char *name, node **env);
 
 /* main */
 state *init(char *prog, char **env);
-void deinit(state **global);
+void deinit(state *self);
 void cleanup(state *self);
+
 #endif

@@ -1,16 +1,26 @@
 #include "shell.h"
 
-bool runbuiltin(state **global, char **arguments)
+/**
+ * runbuiltin - execute a builtin command
+ *
+ * @self: the shell's state
+ * @arguments: command line arguments passed to the shell
+ *
+ * Return: true(1) if a command was found else false(0)
+ */
+bool runbuiltin(state *self, char **arguments)
 {
 	int i, status;
-	state *self;
 	char *command, **args;
 	builtin builtins[] = {
-		{ "exit", shellexit },
+		{"exit", shellexit},
+		{"env", shellenv},
+		{"setenv", shellsetenv},
+		{"unsetenv", shellunsetenv},
+		{"cd", shellcd},
 		{ NULL, NULL }
 	};
 
-	self = *global;
 	command = arguments[0];
 	args = arguments + 1;
 
@@ -18,7 +28,7 @@ bool runbuiltin(state **global, char **arguments)
 	{
 		if (!_strcmp(builtins[i].name, command))
 		{
-			status = builtins[i].handler(global, args);
+			status = builtins[i].handler(self, args);
 			self->_errno = status;
 			return (true);
 		}
@@ -26,22 +36,75 @@ bool runbuiltin(state **global, char **arguments)
 	return (false);
 }
 
+/**
+ * runprogram - execute a program
+ *
+ * @self: the shell's state
+ * @arguments: command line arguments passed to the shell
+ *
+ * Return: true(1) if the program was found else false(0)
+ */
+bool runprogram(state *self, char **arguments)
+{
+	char *path, *error, **env;
+	bool free_path = false;
+	int status, i;
 
-int interactive(state **global)
+	path = arguments[0];
+
+	if (!ispath(path))
+	{
+		path = findcmd(path,
+			set_default(&(self->env), "PATH", "")->val);
+		if (!path)
+			return (false);
+		free_path = true;
+	}
+	else if (access(path, F_OK) == -1)
+		return (false);
+	if (access(path, X_OK) == -1)
+	{
+		error = format(
+			"%s: %d: %s: Permission denied\n",
+			self->prog, self->lineno, arguments[0]);
+		printerr(error);
+		free(error);
+		self->_errno = 126;
+	}
+	else
+	{
+		env = to_strarr(self->env);
+		status = execute(path, arguments, env);
+		for (i = 0; env[i]; i++)
+			free(env[i]);
+		free(env);
+		self->_errno = status;
+	}
+	if (free_path)
+		free(path);
+	return (true);
+}
+
+/**
+ * interactive - runs the shell in interactive mode
+ *
+ * @self: the shell's state
+ *
+ * Return: always 0
+ */
+int interactive(state *self)
 {
 	char *error;
 	bool found;
-	state *self = *global;
-
 
 	for (; true; self->lineno++)
 	{
 		found = false;
-		write(STDOUT_FILENO, "($) ", 4);
+		printout("($) ");
 		self->line = getLine();
 		if (!self->line)
 		{
-			write(STDOUT_FILENO, "\n", 1);
+			printout("\n");
 			break;
 		}
 		self->arguments = tokenizeLine(self->line);
@@ -50,16 +113,17 @@ int interactive(state **global)
 			cleanup(self);
 			continue;
 		}
-		found = runbuiltin(global, self->arguments);
+		found = runbuiltin(self, self->arguments);
+		if (!found)
+			found = runprogram(self, self->arguments);
 		if (!found)
 		{
 			error = format(
-				"%s: %d: %s: not found",
+				"%s: %d: %s: not found\n",
 				self->prog, self->lineno, self->arguments[0]
 			);
-			write(STDERR_FILENO, error, _strlen(error));
+			printerr(error);
 			free(error);
-			write(STDOUT_FILENO, "\n", 1);
 			self->_errno = EKEYEXPIRED;
 		}
 		cleanup(self);
@@ -72,14 +136,13 @@ int interactive(state **global)
  * @program: path of the program to execute
  * @args: command line arguments to pass to the program
  * @env: the environme
- * Return: an integer
+ * Return: the exit status of the child process
  */
 int execute(const char *program, char *args[], char *env[])
 {
 	pid_t pid;
 	int status;
 
-	printf("process[%u]: creating child process\n", getpid());
 	pid = fork();
 	if (pid == -1)
 	{
@@ -88,16 +151,14 @@ int execute(const char *program, char *args[], char *env[])
 	}
 	if (pid == 0)
 	{
-		printf("process[%u]: executing %s\n", getpid(), program);
 		execve(program, args, env);
-		exit(0);
+		exit(errno);
 	}
 	else
 	{
 		wait(&status);
-		printf(
-			"process[%u]: child process exited with status %d\n",
-			getpid(), status);
+		if (status != 0)
+			return (2);
 	}
 	return (status);
 }

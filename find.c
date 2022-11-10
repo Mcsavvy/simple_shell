@@ -52,60 +52,6 @@ struct dirent *findfile(DIR *dir, const char *filename)
 	return (file);
 }
 
-/**
- * joinpath - join two paths together using /
- *
- * @base: the base path
- * @child: the child path
- *
- * Return: A new malloced string where base and child are stringed
- * together like this: base/child
- *
- * NOTE: if one of the strings is NULL, it returns NULL
- */
-char *joinpath(const char *base, const char *child)
-{
-	char *newpath;
-	int baselen, childlen, i, index;
-	bool has_sep;
-
-	baselen = childlen = index = 0;
-	has_sep = false;
-
-	if (!(base && child))
-		return (NULL);
-
-	while (base[baselen] != '\0')
-		baselen++;
-	while (child[childlen] != '\0')
-		childlen++;
-
-	if (base[baselen - 1] == '/' || child[0] == '/')
-		has_sep = true;
-
-	newpath = malloc(
-		/* create space for a nullbyte and space for the / */
-		baselen + childlen + 1 + has_sep ? 0 : 1
-	);
-
-	for (i = 0; i < baselen; i++)
-	{
-		newpath[index] = base[i];
-		index++;
-	}
-	if (!has_sep)
-	{
-		newpath[index] = '/';
-		index++;
-	}
-	for (i = 0; i < childlen; i++)
-	{
-		newpath[index] = child[i];
-		index++;
-	}
-	newpath[index] = '\0';
-	return (newpath);
-}
 
 /**
  * findcmd - searches through $PATH to find a command

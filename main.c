@@ -2,10 +2,10 @@
 
 /**
  * init - initialize the shell's state
- * 
+ *
  * @prog: the program name
  * @env: the process' environment variables
- * 
+ *
  * Return: the shell's state
  */
 state *init(char *prog, char **env)
@@ -26,26 +26,26 @@ state *init(char *prog, char **env)
 
 /**
  * deinit - destroy the shell's state
- * 
- * @state: the shell's state
- * 
+ *
+ * @self: the shell's state
+ *
  * Return: nothing
  */
-void deinit(state **global)
+void deinit(state *self)
 {
-	if (!global || !global[0])
+	if (!self)
 		return;
-	free_list((*global)->env);
-	free_list((*global)->aliases);
-	free((*global)->line);
-	free((*global)->arguments);
-	free(*global);
-	*global = NULL;
+
+	free_list(self->env);
+	free_list(self->aliases);
+	free(self->line);
+	free(self->arguments);
+	free(self);
 }
 
 /**
  * cleanup - routine clean up that frees up memory in the state
- * @state: the state
+ * @self: the shell's state
  * Return: nothing
  */
 void cleanup(state *self)
@@ -82,8 +82,8 @@ int main(int ac, char **av, char **env)
 
 	(void)ac;
 	self = init(av[0], env);
-	interactive(&self);
+	interactive(self);
 	status = self->_errno;
-	deinit(&self);
+	deinit(self);
 	return (status);
 }

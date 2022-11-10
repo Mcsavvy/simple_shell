@@ -10,9 +10,13 @@
  */
 void print_list(node *head)
 {
+	char *message;
+
 	if (!head)
 		return;
-	printf("%s=%s\n", head->var, head->val);
+	message = format("%s=%s\n", head->var, head->val);
+	printout(message);
+	free(message);
 	print_list(head->next);
 }
 

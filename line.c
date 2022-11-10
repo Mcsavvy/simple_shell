@@ -54,7 +54,7 @@ char **tokenizeLine(char *line)
 {
 	char **array, c, temp;
 	size_t arr_size;
-	int arr_index, line_index, next_quote_index;
+	int arr_index, line_index;
 
 	if (!(line && *line))
 		return (NULL);
@@ -67,25 +67,19 @@ char **tokenizeLine(char *line)
 	for (line_index = 0; line && line[line_index]; line_index++)
 	{
 		c = line[line_index];
-
-		if ((c == '\'' || c == '"') && temp != '\\')
-		{
-			if (temp == '\0')
-				appendStr(&array, &arr_size, &line[line_index], arr_index++);
-			next_quote_index = findquote(&line[line_index + 1], c);
-			printf("next quote index: %d\n", next_quote_index);
-			if (next_quote_index == -1)
-			{}
-			else
-				line_index += next_quote_index;
-		}
-		else if (c == ' ' || c == '\t')
+		if (c == ' ' || c == '\t')
 			line[line_index] = '\0';
 		else
 			if (temp == '\0')
 				appendStr(&array, &arr_size, &line[line_index], arr_index++);
 		temp = line[line_index];
 	}
-	appendStr(&array, &arr_size, NULL, arr_index);
+	if (arr_index)
+		appendStr(&array, &arr_size, NULL, arr_index);
+	else
+	{
+		free(array);
+		array = NULL;
+	}
 	return (array);
 }
