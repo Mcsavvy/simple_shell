@@ -1,5 +1,11 @@
 #include "shell.h"
-
+/**
+ * replace - replace a variable with something else
+ *
+ * @self: the variable to be replaced
+ * @var: the value
+ * Return: a string of the new variable
+ */
 char *replace(state *self, char *var)
 {
 	int len;
@@ -24,4 +30,5 @@ char *replace(state *self, char *var)
 	if (!n)
 		return ("");
 	return (n->val);
+
 }

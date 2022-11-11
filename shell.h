@@ -18,6 +18,7 @@ void printout(const char *message);
 
 /* quote */
 int findquote(char *str, char quote);
+void comment(char *av[]);
 
 /* line */
 char *getLine(void);

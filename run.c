@@ -45,7 +45,7 @@ bool runbuiltin(state *self, char **arguments)
  *
  * Return: true(1) if the program was found else false(0)
  */
-bool runprogram(state *self, char **arguments)
+int runprogram(state *self, char **arguments)
 {
 	char *path, *error, **env;
 	bool free_path = false;
@@ -83,6 +83,7 @@ bool runprogram(state *self, char **arguments)
 	}
 	if (free_path)
 		free(path);
+
 	return (true);
 }
 
@@ -110,17 +111,18 @@ int interactive(state *self)
 			break;
 		}
 		self->arguments = tokenizeLine(self->line);
-		if (!self->arguments)
+		if (!self->arguments || _strcmp(self->arguments[0], "#") == 0)
 		{
 			cleanup(self);
 			continue;
 		}
 		for (i = 1; self->arguments[i]; i++)
 			self->arguments[i] = replace(self, self->arguments[i]);
+		comment(self->arguments);
 		found = runbuiltin(self, self->arguments);
 		if (!found)
 			found = runprogram(self, self->arguments);
-		if (!found)
+		else if (!found)
 		{
 			error = format(
 				"%s: %d: %s: not found\n",

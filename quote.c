@@ -34,3 +34,19 @@ int findquote(char *str, char quote)
 	}
 	return (-1);
 }
+/**
+ * comment - Identifies a comment in command line
+ *
+ * @av: the command line arguments
+ * Return: Nothing. It is void
+ */
+void comment(char *av[])
+{
+	int j;
+
+	for (j = 0; av[j]; j++)
+	{
+		if (_strcmp(av[j], "#") == 0)
+			av[j] = NULL;
+	}
+}
