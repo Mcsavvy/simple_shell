@@ -52,4 +52,6 @@ state *init(char *prog, char **env);
 void deinit(state *self);
 void cleanup(state *self);
 
+char *replace(state *self, char *var);
+
 #endif

@@ -17,19 +17,23 @@ typedef exit_status(*builtincmd)(state *, char **);
  * @_errno: a number indicating the error of the last command ran
  * @lineno: the current line number
  * @prog: the program name used to start the shell
+ * @buf: a buffer that can be used in the program
+ * @bufsize: the size of the buffer
  * @arguments: command line argument array
  * @pid: the process ID of the shell
  */
 struct state
 {
 	pid_t pid;
-	char *prog;
-	node *env;
-	node *aliases;
-	char *line;
-	char **arguments;
 	int lineno;
 	int _errno;
+	size_t bufsize;
+	char *prog;
+	char *buf;
+	char *line;
+	char **arguments;
+	node *env;
+	node *aliases;
 };
 
 

@@ -85,22 +85,17 @@ bool appendChar(char **string, size_t *size, char chr, int index)
  */
 int appendInt(char **string, size_t *size, int num, int index)
 {
-	int len = 0, temp;
+	int len = 0;
 
 	if (num < 0)
 	{
-		if (!appendChar(string, size, '-', index + len))
-			return (-1);
+		appendChar(string, size, '-', index + len);
 		num *= -1;
 		len++;
 	}
-	if (num == 0)
-		return (0);
-	temp = appendInt(string, size, num / 10, index + len);
-	if (temp == -1)
-		return (-1);
-	len += temp;
-	if (!appendChar(string, size, (num % 10) + '0', index + len))
-		return (-1);
-	return (++len);
+	if (num < 10)
+		return (len + appendChar(string, size, ('0' + num), index + len));
+	len += appendInt(string, size, num / 10, index + len);
+	len += appendChar(string, size, (num % 10) + '0', index + len);
+	return (len);
 }

@@ -20,6 +20,8 @@ state *init(char *prog, char **env)
 	global->_errno = 0;
 	global->line = NULL;
 	global->arguments = NULL;
+	global->bufsize = 1;
+	global->buf = malloc(sizeof(char) * global->bufsize);
 
 	return (global);
 }
@@ -40,6 +42,7 @@ void deinit(state *self)
 	free_list(self->aliases);
 	free(self->line);
 	free(self->arguments);
+	free(self->buf);
 	free(self);
 }
 

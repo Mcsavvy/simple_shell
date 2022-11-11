@@ -18,6 +18,7 @@ bool runbuiltin(state *self, char **arguments)
 		{"setenv", shellsetenv},
 		{"unsetenv", shellunsetenv},
 		{"cd", shellcd},
+		{"alias", shellalias},
 		{ NULL, NULL }
 	};
 
@@ -96,6 +97,7 @@ int interactive(state *self)
 {
 	char *error;
 	bool found;
+	int i;
 
 	for (; true; self->lineno++)
 	{
@@ -113,6 +115,8 @@ int interactive(state *self)
 			cleanup(self);
 			continue;
 		}
+		for (i = 1; self->arguments[i]; i++)
+			self->arguments[i] = replace(self, self->arguments[i]);
 		found = runbuiltin(self, self->arguments);
 		if (!found)
 			found = runprogram(self, self->arguments);
