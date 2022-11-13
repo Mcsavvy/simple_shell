@@ -57,3 +57,6 @@ core
 hsh
 getchar.c
 list3.c
+_script
+_stat
+_stat.c

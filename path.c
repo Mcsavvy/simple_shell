@@ -42,34 +42,23 @@ char *joinpath(const char *base, const char *child)
 	if (!(base && child))
 		return (NULL);
 
-	while (base[baselen] != '\0')
-		baselen++;
-	while (child[childlen] != '\0')
-		childlen++;
+	baselen = _strlen(base);
+	childlen = _strlen(child);
 
 	if (base[baselen - 1] == '/' || child[0] == '/')
 		has_sep = true;
 
 	newpath = malloc(
 		/* create space for a nullbyte and space for the / */
-		baselen + childlen + 1 + has_sep ? 0 : 1
+		baselen + childlen + 2
 	);
 
 	for (i = 0; i < baselen; i++)
-	{
-		newpath[index] = base[i];
-		index++;
-	}
+		newpath[index++] = base[i];
 	if (!has_sep)
-	{
-		newpath[index] = '/';
-		index++;
-	}
+		newpath[index++] = '/';
 	for (i = 0; i < childlen; i++)
-	{
-		newpath[index] = child[i];
-		index++;
-	}
+		newpath[index++] = child[i];
 	newpath[index] = '\0';
 	return (newpath);
 }

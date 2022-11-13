@@ -84,6 +84,7 @@ int main(int ac, char **av, char **env)
 	state *self;
 
 	(void)ac;
+	signal(SIGINT, SIG_IGN);
 	self = init(av[0], env);
 	interactive(self);
 	status = self->_errno;

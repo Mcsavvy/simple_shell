@@ -50,6 +50,7 @@ bool runprogram(state *self, char **arguments)
 	char *path, *error, **env;
 	bool free_path = false;
 	int status, i;
+	struct stat filestat;
 
 	path = arguments[0];
 
@@ -63,7 +64,8 @@ bool runprogram(state *self, char **arguments)
 	}
 	else if (access(path, F_OK) == -1)
 		return (false);
-	if (access(path, X_OK) == -1)
+	stat(path, &filestat);
+	if (access(path, X_OK) == -1 || S_ISREG(filestat.st_mode) == 0)
 	{
 		error = format(
 			"%s: %d: %s: Permission denied\n",
