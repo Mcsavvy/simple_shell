@@ -38,6 +38,11 @@ char *joinpath(const char *base, const char *child);
 int interactive(state *self);
 int execute(const char *program, char **args, char **env);
 
+/*tokenizefile*/
+char ***tokenizefiles(char *line);
+char **tokenizefile(char *line);
+void replaceline(char *av[]);
+
 /* append */
 bool appendStr(char ***arr, size_t *size, char *str, int index);
 bool appendChar(char **string, size_t *size, char chr, int index);
