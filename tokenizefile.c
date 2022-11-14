@@ -70,7 +70,7 @@ char ***tokenizefiles(char *s)
 	if (s == NULL)
 		return (NULL);
 	i = 0;
-	files = tokenizefile(line);
+	files = tokenizefile(s);
 	while (files[i] != NULL)
 	{
 		tokenizedfiles[i] = tokenizeLine(files[i]);
