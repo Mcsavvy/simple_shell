@@ -27,7 +27,6 @@ void comment(char *av[]);
 
 /* line */
 char *getlines(int fd);
-char **tokenizeLine(char *line);
 char **split(char *string, char *delimiter, unsigned int max);
 
 /* find */
