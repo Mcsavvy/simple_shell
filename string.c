@@ -1,15 +1,31 @@
 #include "shell.h"
 #include "strings.h"
+
 /**
- * _putchar - prints a char
+ * _strdup - duplicate a string
  *
- * @c: the char to be printed
- * Return: 1
+ * @str: string to duplicate
+ *
+ * Return: new string or NULL if malloc failed
  */
-int _putchar(char c)
+char *_strdup(const char *str)
 {
-	return (write(1, &c, 1));
+	char *s;
+	unsigned int i, l;
+
+	if (str == NULL)
+		return (NULL);
+	l = _strlen(str);
+	s = malloc(l + 1);
+	if (!s)
+		return (NULL);
+	for (i = 0; i < l; i++)
+		s[i] = str[i];
+	s[i] = '\0';
+	return (s);
 }
+
+
 /**
  * _strlen - it swaps the values of two integers
  * Description:'A function'
@@ -28,20 +44,7 @@ int _strlen(const char *s)
 	}
 	return (lenght);
 }
-/**
- * _puts - it prints out a string and a new line
- * Description:'A function'
- * @str: the string to be checked
- * Return: Nothing
- */
-void _puts(const char *str)
-{
-	int i;
 
-	for (i = 0; str[i] != '\0'; i++)
-		_putchar(str[i]);
-	_putchar('\n');
-}
 /**
  * _strcmp - compares two strings
  * @s1: the string to be compared

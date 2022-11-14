@@ -3,6 +3,7 @@
 #define bool int
 #define true 1
 #define false 0
+#define NPTRS(n) (n * sizeof(void *))
 
 #include "headers/include.h"
 #include "headers/list.h"
@@ -15,18 +16,21 @@ extern char **environ;
 /* io */
 void printerr(const char *message);
 void printout(const char *message);
+void fprinterr(char *message);
+void fprintout(char *message);
+
 
 /* quote */
 int findquote(char *str, char quote);
 void comment(char *av[]);
 
 /* line */
-char *getLine(void);
+char *getlines(int fd);
 char **tokenizeLine(char *line);
+char **split(char *string, char *delimiter, unsigned int max);
 
 /* find */
 char *findcmd(const char *command, const char *PATH);
-char *findenv(char *env[], const char *name);
 struct dirent *findfile(DIR *dir, const char *filename);
 char *joinpath(const char *base, const char *child);
 
@@ -53,6 +57,10 @@ state *init(char *prog, char **env);
 void deinit(state *self);
 void cleanup(state *self);
 
+/* replacement */
 char *replace(state *self, char *var);
+
+/* realloc */
+void *_realloc(void *ptr, unsigned int osize, unsigned int nsize);
 
 #endif

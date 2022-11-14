@@ -13,6 +13,8 @@ void printerr(const char *message)
 	write(STDERR_FILENO, message, _strlen(message));
 }
 
+
+
 /**
  * printout - prints a message to stdout
  *
@@ -25,6 +27,33 @@ void printout(const char *message)
 	write(STDOUT_FILENO, message, _strlen(message));
 }
 
+/**
+ * fprinterr - print an error message to stderr
+ *
+ * @message: the message to print
+ *
+ * Return: nothing
+ */
+void fprinterr(char *message)
+{
+	write(STDERR_FILENO, message, _strlen(message));
+	free(message);
+}
+
+
+
+/**
+ * fprintout - prints a message to stdout
+ *
+ * @message: the message to print
+ *
+ * Return: nothing
+ */
+void fprintout(char *message)
+{
+	write(STDOUT_FILENO, message, _strlen(message));
+	free(message);
+}
 
 /**
  * format - resolves format specifiers in a string

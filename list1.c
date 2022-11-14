@@ -10,13 +10,9 @@
  */
 void print_list(node *head)
 {
-	char *message;
-
 	if (!head)
 		return;
-	message = format("%s=%s\n", head->var, head->val);
-	printout(message);
-	free(message);
+	fprintout(format("%s=%s\n", head->var, head->val));
 	print_list(head->next);
 }
 
@@ -57,8 +53,8 @@ node *add_node(node **head, const char *var, const char *val)
 	new_node = malloc(sizeof(new_node));
 	if (!new_node)
 		return (NULL);
-	new_node->var = strdup(var);
-	new_node->val = strdup(val);
+	new_node->var = _strdup(var);
+	new_node->val = _strdup(val);
 	if (!(new_node->var && new_node->val))
 	{
 		free(new_node);
@@ -86,8 +82,8 @@ node *add_node_end(node **head, const char *var, const char *val)
 	new_node = malloc(sizeof(node));
 	if (!new_node)
 		return (NULL);
-	new_node->var = strdup(var);
-	new_node->val = strdup(val);
+	new_node->var = _strdup(var);
+	new_node->val = _strdup(val);
 	if (!(new_node->var && new_node->val))
 	{
 		free(new_node);

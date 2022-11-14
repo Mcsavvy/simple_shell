@@ -12,24 +12,28 @@
  */
 bool appendStr(char ***arr, size_t *size, char *str, int index)
 {
-	size_t s;
-	char **a;
+	size_t arr_size;
+	char **array;
 
-	s = *size;
-	a = *arr;
+	arr_size = *size;
+	array = *arr;
 
 	if (!(arr && *arr))
 		return (false);
-	while (s <= (unsigned int)index)
+	while (arr_size <= (unsigned int)index)
 	{
-		s *= 2;
-		a = realloc(a, s * sizeof(char *));
-		if (!a)
+		if (arr_size == 0)
+			arr_size++;
+		array = _realloc(array,
+			NPTRS(arr_size),
+			NPTRS(arr_size) * 2);
+		arr_size *= 2;
+		if (!array)
 			return (false);
 	}
-	(a)[index] = str;
-	*arr = a;
-	*size = s;
+	(array)[index] = str;
+	*arr = array;
+	*size = arr_size;
 	return (true);
 }
 
@@ -45,30 +49,32 @@ bool appendStr(char ***arr, size_t *size, char *str, int index)
  */
 bool appendChar(char **string, size_t *size, char chr, int index)
 {
-	size_t s;
+	size_t buf_size;
 	char *buf;
 
 	if (!(string && *string))
 		return (false);
 
 	if (size == NULL)
-		for (s = 0; (*string)[s]; s++)
+		for (buf_size = 0; (*string)[buf_size]; buf_size++)
 			continue;
 	else
-		s = *size;
+		buf_size = *size;
 	buf = *string;
 
-	while (s <= (unsigned int)index)
+	while (buf_size <= (unsigned int)index)
 	{
-		s *= 2;
-		buf = realloc(buf, s);
+		if (buf_size == 0)
+			buf_size++;
+		buf = _realloc(buf, buf_size, buf_size * 2);
+		buf_size *= 2;
 		if (!buf)
 			return (false);
 	}
 	buf[index] = chr;
 	*string = buf;
 	if (size != NULL)
-		*size = s;
+		*size = buf_size;
 	return (true);
 }
 

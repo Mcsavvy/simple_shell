@@ -47,7 +47,7 @@ bool runbuiltin(state *self, char **arguments)
  */
 int runprogram(state *self, char **arguments)
 {
-	char *path, *error, **env;
+	char *path, **env;
 	bool free_path = false;
 	int status, i;
 	struct stat filestat;
@@ -64,14 +64,14 @@ int runprogram(state *self, char **arguments)
 	}
 	else if (access(path, F_OK) == -1)
 		return (false);
+
 	stat(path, &filestat);
+
 	if (access(path, X_OK) == -1 || S_ISREG(filestat.st_mode) == 0)
 	{
-		error = format(
+		fprinterr(format(
 			"%s: %d: %s: Permission denied\n",
-			self->prog, self->lineno, arguments[0]);
-		printerr(error);
-		free(error);
+			self->prog, self->lineno, arguments[0]));
 		self->_errno = 126;
 	}
 	else
@@ -98,7 +98,6 @@ int runprogram(state *self, char **arguments)
  */
 int interactive(state *self)
 {
-	char *error;
 	bool found;
 	int i;
 
@@ -106,32 +105,30 @@ int interactive(state *self)
 	{
 		found = false;
 		printout("($) ");
-		self->line = getLine();
+		self->line = getlines(STDIN_FILENO);
 		if (!self->line)
 		{
 			printout("\n");
 			break;
 		}
-		self->arguments = tokenizeLine(self->line);
+		self->arguments = split(self->line, "\t ", 0);
 		if (!self->arguments || _strcmp(self->arguments[0], "#") == 0)
 		{
 			cleanup(self);
 			continue;
 		}
-		for (i = 1; self->arguments[i]; i++)
+		for (i = 0; self->arguments[i]; i++)
 			self->arguments[i] = replace(self, self->arguments[i]);
 		comment(self->arguments);
 		found = runbuiltin(self, self->arguments);
 		if (!found)
 			found = runprogram(self, self->arguments);
-		else if (!found)
+		if (!found)
 		{
-			error = format(
+			fprinterr(format(
 				"%s: %d: %s: not found\n",
 				self->prog, self->lineno, self->arguments[0]
-			);
-			printerr(error);
-			free(error);
+			));
 			self->_errno = EKEYEXPIRED;
 		}
 		cleanup(self);
@@ -160,13 +157,18 @@ int execute(const char *program, char *args[], char *env[])
 	if (pid == 0)
 	{
 		execve(program, args, env);
-		exit(errno);
+		_exit(EXIT_FAILURE);
 	}
 	else
 	{
-		wait(&status);
-		if (status != 0)
-			return (2);
+		if (waitpid(pid, &status, 0) == -1)
+		{
+			perror("waitpid failed");
+			return (-1);
+		}
+
+		if (WIFEXITED(status))
+			status = WEXITSTATUS(status);
 	}
 	return (status);
 }

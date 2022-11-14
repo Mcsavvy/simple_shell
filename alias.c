@@ -30,7 +30,7 @@ int get_equal_sign(const char *s)
 exit_status shellalias(state *self, char **arguments)
 {
 	int eq, i, status;
-	char *token, *message;
+	char *token;
 	node *alias;
 
 	status = 0;
@@ -49,17 +49,13 @@ exit_status shellalias(state *self, char **arguments)
 			alias = get_node(self->aliases, token);
 			if (!alias)
 			{
-				message = format("alias: %s not found\n", token);
-				printerr(message);
-				free(message);
+				fprinterr(format("alias: %s not found\n", token));
 				status = 1;
 			}
 			else
 			{
-				message = format("%s=%s\n",
-					alias->var, (!alias->val[0]) ? "''" : alias->val);
-				printout(message);
-				free(message);
+				fprintout(format("%s=%s\n",
+					alias->var, (!alias->val[0]) ? "''" : alias->val));
 			}
 		}
 		else

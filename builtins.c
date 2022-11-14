@@ -12,7 +12,6 @@ exit_status shellexit(state *self, char **arguments)
 {
 	exit_status status = 0;
 	char *arg = arguments[0];
-	char *error = NULL;
 
 	if (arg == NULL)
 	{
@@ -21,12 +20,10 @@ exit_status shellexit(state *self, char **arguments)
 	}
 	if (checkatoi(arg) == false)
 	{
-		error = format(
+		fprinterr(format(
 			"%s: %d: exit: Illegal number: %s\n",
 			self->prog, self->lineno, arg
-		);
-		printerr(error);
-		free(error);
+		));
 		return (2);
 	}
 	else
@@ -88,8 +85,6 @@ exit_status shellsetenv(state *self, char **arguments)
  */
 exit_status shellunsetenv(state *self, char **arguments)
 {
-	char *error;
-
 	if (!arguments[0])
 	{
 		printerr("unsetenv: VARIABLE missing\n");
@@ -97,9 +92,7 @@ exit_status shellunsetenv(state *self, char **arguments)
 	}
 	if (!get_node(self->env, arguments[0]))
 	{
-		error = format("unsetenv: %s does not exist\n", arguments[0]);
-		printerr(error);
-		free(error);
+		fprinterr(format("unsetenv: %s does not exist\n", arguments[0]));
 		return (2);
 	}
 	if (!delete_node(&(self->env), arguments[0]))
@@ -120,7 +113,7 @@ exit_status shellunsetenv(state *self, char **arguments)
  */
 exit_status shellcd(state *self, char **arguments)
 {
-	char *error, *path = arguments[0];
+	char *path = arguments[0];
 	char *cwd;
 	node *pwd;
 
@@ -145,11 +138,9 @@ exit_status shellcd(state *self, char **arguments)
 		free(cwd);
 		return (0);
 	} while (false);
-	error = format(
+	fprinterr(format(
 		"%s: %d: cd: can't cd to %s\n",
 		self->prog, self->lineno, path
-	);
-	printerr(error);
-	free(error);
+	));
 	return (2);
 }

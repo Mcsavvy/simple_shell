@@ -87,8 +87,8 @@ bool delete_node(node **head, const char *var)
 node *from_strarr(char **array)
 {
 	node *head;
-	char *str, *var, *val;
-	int i, c;
+	char *str, *var, *val, **arr;
+	int i;
 
 	if (!array || !array[0] || !array[0][0])
 		return (NULL);
@@ -96,19 +96,13 @@ node *from_strarr(char **array)
 	head = NULL;
 	for (i = 0; array[i]; i++)
 	{
-		str = strdup(array[i]);
-		for (c = 0; str[c]; c++)
-		{
-			if (str[c] == '=')
-			{
-				str[c++] = '\0';
-				break;
-			}
-		}
-		var = &str[0];
-		val = &str[c];
+		str = _strdup(array[i]);
+		arr = split(str, "=", 1);
+		var = arr[0];
+		val = arr[1];
 		add_node_end(&head, var, val);
 		free(str);
+		free(arr);
 	}
 	return (head);
 }
