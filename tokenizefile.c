@@ -1,23 +1,5 @@
 #include "shell.h"
 /**
- * replaceline - replaces a comment with a newline
- *
- * @av: the string to be replaced
- * Return: Nothing
- */
-void replaceline(char *av[])
-{
-	int j;
-
-	if (av == NULL)
-		return;
-	for (j = 0; av[j]; j++)
-	{
-		if (_strcmp(av[j], "#") == 0)
-			av[j] = NULL;
-	}
-}
-/**
  * tokenizefile - split a line into separate lines
  * @line: a malloced string to tokenize
  * Return: a null-terminated array of strings

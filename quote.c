@@ -50,5 +50,7 @@ void comment(char *av[])
 	{
 		if (_strcmp(av[j], "#") == 0)
 			av[j] = NULL;
+		if (_strcmp(av[j], ";") == 0)
+			av[j] = "\n";
 	}
 }
