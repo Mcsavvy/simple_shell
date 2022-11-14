@@ -72,7 +72,7 @@ char *format(const char *fmt, ...)
 		return (NULL);
 
 	size = 4;
-	buffer = malloc(size * sizeof(char));
+	buffer = malloc(NCHARS(size));
 	index = buf_index = 0;
 	chr = fmt[index++];
 	nxt = fmt[index];

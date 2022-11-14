@@ -123,7 +123,7 @@ char **split(char *string, char *delimiter, unsigned int max)
 
 	arr_ind = 0;
 	arr_size = 2;
-	array = malloc(arr_size * sizeof(char *));
+	array = malloc(NPTRS(arr_size));
 	prev = '\0';
 
 	for (str_ind = 0; string[str_ind]; str_ind++)
@@ -168,8 +168,8 @@ char **tokenizeLine(char *line)
 		return (NULL);
 
 	line_index = arr_index = 0; /* line index */
-	arr_size = 4;
-	array = malloc(arr_size * sizeof(char *));
+	arr_size = 2;
+	array = malloc(NPTRS(arr_size));
 	temp = '\0';
 
 	for (line_index = 0; line && line[line_index]; line_index++)

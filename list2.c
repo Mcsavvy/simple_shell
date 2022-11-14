@@ -130,13 +130,13 @@ char **to_strarr(node *head)
 
 	n = head;
 	arr_size = 1 + listlen(head);
-	array = malloc(arr_size * sizeof(char *));
+	array = malloc(NPTRS(arr_size));
 	arr_ind = 0;
 
 	while (n)
 	{
 		buf_size = 2 + _strlen(n->var) + _strlen(n->val);
-		buffer = malloc(buf_size * sizeof(char));
+		buffer = malloc(NCHARS(buf_size));
 		buf_ind = 0;
 
 		for (i = 0; n->var[i]; i++)

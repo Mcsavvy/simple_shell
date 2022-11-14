@@ -21,7 +21,7 @@ state *init(char *prog, char **env)
 	global->line = NULL;
 	global->arguments = NULL;
 	global->bufsize = 1;
-	global->buf = malloc(sizeof(char) * global->bufsize);
+	global->buf = malloc(NCHARS(global->bufsize));
 
 	return (global);
 }

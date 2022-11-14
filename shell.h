@@ -4,6 +4,7 @@
 #define true 1
 #define false 0
 #define NPTRS(n) (n * sizeof(void *))
+#degine NCHARS(n) (n * sizeof(char))
 
 #include "headers/include.h"
 #include "headers/list.h"

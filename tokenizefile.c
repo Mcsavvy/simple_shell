@@ -14,8 +14,8 @@ char **tokenizefile(char *line)
 		return (NULL);
 
 	line_index = arr_index = 0; /* line index */
-	arr_size = 4;
-	array = malloc(arr_size * sizeof(char *));
+	arr_size = 2;
+	array = malloc(NPTRS(arr_size));
 	temp = '\0';
 
 	for (line_index = 0; line && line[line_index]; line_index++)
@@ -47,17 +47,21 @@ char ***tokenizefiles(char *s)
 {
 	char **files;
 	char ***tokenizedfiles;
-	int i;
+	int i, l;
 
 	if (s == NULL)
 		return (NULL);
 	i = 0;
 	files = tokenizefile(s);
+	for (l = 0; files[l]; l++)
+		continue;
+	tokenizedfiles = malloc(NPTRS(l) + 1);
 	while (files[i] != NULL)
 	{
 		tokenizedfiles[i] = tokenizeLine(files[i]);
 		i++;
 	}
+	tokenizedfiles[i] = NULL;
 	return (tokenizedfiles);
 
 }
