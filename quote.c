@@ -49,8 +49,9 @@ void comment(char *av[])
 	for (j = 0; av[j]; j++)
 	{
 		if (_strcmp(av[j], "#") == 0)
+		{
 			av[j] = NULL;
-		if (_strcmp(av[j], ";") == 0)
-			av[j] = "\n";
+			break;
+		}
 	}
 }

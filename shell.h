@@ -4,7 +4,7 @@
 #define true 1
 #define false 0
 #define NPTRS(n) (n * sizeof(void *))
-#degine NCHARS(n) (n * sizeof(char))
+#define NCHARS(n) (n * sizeof(char))
 
 #include "headers/include.h"
 #include "headers/list.h"
@@ -37,6 +37,9 @@ char *joinpath(const char *base, const char *child);
 /* run */
 int interactive(state *self);
 int execute(const char *program, char **args, char **env);
+int runline(state *self, char *line);
+bool runbuiltin(state *self, char **arguments);
+int runprogram(state *self, char **arguments);
 
 /*tokenizefile*/
 char ***tokenizefiles(char *line);

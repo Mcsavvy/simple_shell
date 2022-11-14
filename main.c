@@ -18,9 +18,10 @@ state *init(char *prog, char **env)
 	global->pid = getpid();
 	global->prog = prog;
 	global->_errno = 0;
-	global->line = NULL;
-	global->arguments = NULL;
-	global->bufsize = 1;
+	global->content = NULL;
+	global->lines = NULL;
+	global->tokens = NULL;
+	global->bufsize = 3;
 	global->buf = malloc(NCHARS(global->bufsize));
 
 	return (global);
@@ -38,11 +39,16 @@ void deinit(state *self)
 	if (!self)
 		return;
 
-	free_list(self->env);
 	free_list(self->aliases);
-	free(self->line);
-	free(self->arguments);
-	free(self->buf);
+	free_list(self->env);
+	if (self->content)
+		free(self->content);
+	if (self->lines)
+		free(self->lines);
+	if (self->tokens)
+		free(self->tokens);
+	if (self->buf)
+		free(self->buf);
 	free(self);
 }
 
@@ -56,15 +62,21 @@ void cleanup(state *self)
 
 	if (!self)
 		return;
-	if (self->arguments)
+
+	if (self->content)
 	{
-		free(self->arguments);
-		self->arguments = NULL;
+		free(self->content);
+		self->content = NULL;
 	}
-	if (self->line)
+	if (self->lines)
 	{
-		free(self->line);
-		self->line = NULL;
+		free(self->lines);
+		self->lines = NULL;
+	}
+	if (self->tokens)
+	{
+		free(self->tokens);
+		self->tokens = NULL;
 	}
 }
 

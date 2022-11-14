@@ -58,7 +58,7 @@ char ***tokenizefiles(char *s)
 	tokenizedfiles = malloc(NPTRS(l) + 1);
 	while (files[i] != NULL)
 	{
-		tokenizedfiles[i] = tokenizeLine(files[i]);
+		tokenizedfiles[i] = split(files[i], "\t ", 0);
 		i++;
 	}
 	tokenizedfiles[i] = NULL;

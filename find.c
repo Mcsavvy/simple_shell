@@ -60,7 +60,6 @@ char *findcmd(const char *command, const char *PATH)
 			break;
 		}
 	}
-	free(dirs);
 	free(PATHCPY);
 	free(dirs);
 	return (cmd);
