@@ -44,6 +44,8 @@ void comment(char *av[])
 {
 	int j;
 
+	if (av == NULL)
+		return;
 	for (j = 0; av[j]; j++)
 	{
 		if (_strcmp(av[j], "#") == 0)
