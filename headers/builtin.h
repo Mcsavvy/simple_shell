@@ -13,13 +13,14 @@ typedef exit_status(*builtincmd)(state *, char **);
  *
  * @env: shell environment variables
  * @aliases: shell aliases
- * @line: the current line of command being parsed
+ * @content: the contents to be interpreted by the commandline
+ * @lines: an array of lines found in contents
+ * @tokens: an array of tokens found in a line
  * @_errno: a number indicating the error of the last command ran
  * @lineno: the current line number
  * @prog: the program name used to start the shell
  * @buf: a buffer that can be used in the program
  * @bufsize: the size of the buffer
- * @arguments: command line argument array
  * @pid: the process ID of the shell
  */
 struct state
@@ -30,8 +31,9 @@ struct state
 	size_t bufsize;
 	char *prog;
 	char *buf;
-	char *line;
-	char **arguments;
+	char *content;
+	char **lines;
+	char **tokens;
 	node *env;
 	node *aliases;
 };

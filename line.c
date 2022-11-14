@@ -137,8 +137,10 @@ char **split(char *string, char *delimiter, unsigned int max)
 				flipped = true;
 				break;
 			}
-		if (!prev && !flipped)
+		if (prev == '\0' && flipped == false)
+		{
 			appendStr(&array, &arr_size, &string[str_ind], arr_ind++);
+		}
 		if (max && max + 1 == arr_ind)
 			break;
 		prev = string[str_ind];

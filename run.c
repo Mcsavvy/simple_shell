@@ -98,38 +98,30 @@ int runprogram(state *self, char **arguments)
  */
 int interactive(state *self)
 {
-	bool found;
-	int i;
+	int l;
+	char *content;
+	char **lines;
 
 	for (; true; self->lineno++)
 	{
-		found = false;
 		printout("($) ");
-		self->line = getlines(STDIN_FILENO);
-		if (!self->line)
+		content = getlines(STDIN_FILENO);
+		if (!content)
 		{
 			printout("\n");
 			break;
 		}
-		self->arguments = split(self->line, "\t ", 0);
-		if (!self->arguments || _strcmp(self->arguments[0], "#") == 0)
+		self->content = content;
+		lines = split(content, ";", 0);
+		if (!lines)
 		{
 			cleanup(self);
 			continue;
 		}
-		for (i = 0; self->arguments[i]; i++)
-			self->arguments[i] = replace(self, self->arguments[i]);
-		comment(self->arguments);
-		found = runbuiltin(self, self->arguments);
-		if (!found)
-			found = runprogram(self, self->arguments);
-		if (!found)
+		self->lines = lines;
+		for (l = 0; lines[l]; l++)
 		{
-			fprinterr(format(
-				"%s: %d: %s: not found\n",
-				self->prog, self->lineno, self->arguments[0]
-			));
-			self->_errno = EKEYEXPIRED;
+			runline(self, lines[l]);
 		}
 		cleanup(self);
 	}
