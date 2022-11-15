@@ -104,7 +104,7 @@ int interactive(state *self)
 
 	for (; true; self->lineno++)
 	{
-		printout("($) ");
+		prompt(self);
 		content = getlines(STDIN_FILENO);
 		if (!content)
 		{

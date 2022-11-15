@@ -53,12 +53,13 @@ char *findcmd(const char *command, const char *PATH)
 		if (!dir)
 			continue;
 		node = findfile(dir, command);
-		closedir(dir);
 		if (node)
 		{
 			cmd = joinpath(dirname, node->d_name);
+			closedir(dir);
 			break;
 		}
+		closedir(dir);
 	}
 	free(PATHCPY);
 	free(dirs);

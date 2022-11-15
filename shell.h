@@ -19,6 +19,7 @@ void printerr(const char *message);
 void printout(const char *message);
 void fprinterr(char *message);
 void fprintout(char *message);
+void prompt(state *self);
 
 
 /* quote */

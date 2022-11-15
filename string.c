@@ -36,6 +36,9 @@ int _strlen(const char *s)
 {
 	int i, lenght;
 
+	if (s == NULL)
+		return (-1);
+
 	lenght = 0;
 
 	for (i = 0; s[i] != '\0'; i++)
