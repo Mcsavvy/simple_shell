@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <limits.h>
 
 /**
  * init - initialize the shell's state
@@ -15,14 +16,13 @@ state *init(char *prog, char **env)
 	self->lineno = 1;
 	self->aliases = NULL;
 	self->env = from_strarr(env);
-	self->pid = getpid();
 	self->prog = prog;
 	self->_errno = 0;
 	self->content = NULL;
 	self->lines = NULL;
 	self->tokens = NULL;
-	self->bufsize = 3;
-	self->buf = malloc(NCHARS(self->bufsize));
+	self->errno_buf = malloc(NCHARS(12));
+	self->pid_buf = format("%d", getpid());
 	self->parts = NULL;
 	self->fd = STDIN_FILENO;
 
@@ -43,18 +43,13 @@ void deinit(state *self)
 
 	free_list(self->aliases);
 	free_list(self->env);
-	if (self->content)
-		free(self->content);
-	if (self->lines)
-		free(self->lines);
-	if (self->tokens)
-		free(self->tokens);
-	if (self->buf)
-		free(self->buf);
-	if (self->parts)
-		free(self->parts);
-	if (self->fd)
-		close(self->fd);
+	free(self->content);
+	free(self->lines);
+	free(self->tokens);
+	free(self->parts);
+	close(self->fd);
+	free(self->pid_buf);
+	free(self->errno_buf);
 	free(self);
 }
 
@@ -69,26 +64,14 @@ void cleanup(state *self)
 	if (!self)
 		return;
 
-	if (self->content)
-	{
-		free(self->content);
-		self->content = NULL;
-	}
-	if (self->lines)
-	{
-		free(self->lines);
-		self->lines = NULL;
-	}
-	if (self->parts)
-	{
-		free(self->parts);
-		self->parts = NULL;
-	}
-	if (self->tokens)
-	{
-		free(self->tokens);
-		self->tokens = NULL;
-	}
+	free(self->content);
+	self->content = NULL;
+	free(self->lines);
+	self->lines = NULL;
+	free(self->parts);
+	self->parts = NULL;
+	free(self->tokens);
+	self->tokens = NULL;
 }
 
 /**
