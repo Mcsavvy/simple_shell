@@ -102,6 +102,7 @@ int interactive(state *self)
 	char *content;
 	char **parts;
 
+
 	for (; true; self->lineno++)
 	{
 		prompt(self);
@@ -141,6 +142,7 @@ int non_interactive(state *self, int fd)
 {
 	int l, i;
 	char *content, **lines, **parts;
+
 
 	content = getlines(fd);
 	if (!content)

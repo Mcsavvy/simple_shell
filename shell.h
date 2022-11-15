@@ -42,6 +42,10 @@ int execute(const char *program, char **args, char **env);
 int runline(state *self, char *line);
 bool runbuiltin(state *self, char **arguments);
 int runprogram(state *self, char **arguments);
+char **runalias(state *self, char **line);
+
+/*count*/
+int count_str(char **stri);
 
 /*tokenizefile*/
 char ***tokenizefiles(char *line);
