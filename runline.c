@@ -13,8 +13,8 @@ int runline(state *self, char *line)
 	bool command_found;
 	int i;
 	char **tokens, **newt;
-	
-       	newt = split(line, "\t ", 0);
+
+	newt = split(line, "\t ", 0);
 	if (!newt)
 		return (0);
 	tokens = runalias(self, newt);
@@ -33,7 +33,6 @@ int runline(state *self, char *line)
 			self->prog, self->lineno, tokens[0]));
 		self->_errno = EKEYEXPIRED;
 	}
-//	free(newt);
 	free(self->tokens);
 	self->tokens = NULL;
 	return (0);

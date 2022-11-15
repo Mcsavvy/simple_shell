@@ -18,19 +18,6 @@ int get_equal_sign(const char *s)
 	return (0);
 }
 
-char *find_alias(node *alias, char *aliasname)
-{
-	node *temp;
-
-	temp = alias;
-	while (temp != NULL)
-	{
-		if (_strcmp(temp->var, aliasname) == 0)
-			return (temp->val);
-		temp = temp->next;
-	}
-	return (NULL);
-}
 /**
  * shellexit - exits the shell
  *
@@ -90,7 +77,7 @@ int count_str(char **stri)
 
 	i = 0;
 	if (stri == NULL)
-		return(i);
+		return (i);
 	for (i = 0; stri[i] != NULL; i++)
 		;
 	return (i);
@@ -98,7 +85,7 @@ int count_str(char **stri)
 /**
  * runalias - runs an alias
  *
- * @state: the shell's state
+ * @self: the shell's state
  * @line: the line to run
  * Return: true if it works or false if it fails
  */
@@ -116,7 +103,7 @@ char **runalias(state *self, char **line)
 
 	alias = get_node(self->aliases, line[0]);
 	if (!alias)
-	{	
+	{
 		return (line);
 	}
 	aliasi = alias->val;
