@@ -36,6 +36,7 @@ char *joinpath(const char *base, const char *child);
 
 /* run */
 int interactive(state *self);
+int non_interactive(state *self, int fd);
 int execute(const char *program, char **args, char **env);
 int runline(state *self, char *line);
 bool runbuiltin(state *self, char **arguments);

@@ -10,21 +10,23 @@
  */
 state *init(char *prog, char **env)
 {
-	state *global = malloc(sizeof(state));
+	state *self = malloc(sizeof(state));
 
-	global->lineno = 1;
-	global->aliases = NULL;
-	global->env = from_strarr(env);
-	global->pid = getpid();
-	global->prog = prog;
-	global->_errno = 0;
-	global->content = NULL;
-	global->lines = NULL;
-	global->tokens = NULL;
-	global->bufsize = 3;
-	global->buf = malloc(NCHARS(global->bufsize));
+	self->lineno = 1;
+	self->aliases = NULL;
+	self->env = from_strarr(env);
+	self->pid = getpid();
+	self->prog = prog;
+	self->_errno = 0;
+	self->content = NULL;
+	self->lines = NULL;
+	self->tokens = NULL;
+	self->bufsize = 3;
+	self->buf = malloc(NCHARS(self->bufsize));
+	self->parts = NULL;
+	self->fd = STDIN_FILENO;
 
-	return (global);
+	return (self);
 }
 
 /**
@@ -49,6 +51,10 @@ void deinit(state *self)
 		free(self->tokens);
 	if (self->buf)
 		free(self->buf);
+	if (self->parts)
+		free(self->parts);
+	if (self->fd)
+		close(self->fd);
 	free(self);
 }
 
@@ -73,11 +79,57 @@ void cleanup(state *self)
 		free(self->lines);
 		self->lines = NULL;
 	}
+	if (self->parts)
+	{
+		free(self->parts);
+		self->parts = NULL;
+	}
 	if (self->tokens)
 	{
 		free(self->tokens);
 		self->tokens = NULL;
 	}
+}
+
+/**
+ * open_file - used by the main function to open a file
+ *
+ * @self: the shell's state
+ * @path: the path of the file
+ *
+ * Return: the open file descriptor
+ */
+int open_file(state *self, char *path)
+{
+	int fd;
+
+	if (access(path, F_OK) == -1)
+	{
+		fprinterr(format(
+			"%s: %d: cannot open %s: No such file\n",
+			self->prog, 0, path));
+		deinit(self);
+		exit(2);
+	}
+	if (access(path, R_OK) == -1)
+	{
+		{
+			fprinterr(format(
+				"%s: %d: cannot open %s: Permission denied\n",
+				self->prog, 0, path));
+			deinit(self);
+			exit(2);
+		}
+	}
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+	{
+		perror(self->prog);
+		deinit(self);
+		exit(EXIT_FAILURE);
+	}
+	self->fd = fd;
+	return (fd);
 }
 
 
@@ -94,11 +146,19 @@ int main(int ac, char **av, char **env)
 {
 	int status;
 	state *self;
+	int fd;
 
 	(void)ac;
+	fd = STDIN_FILENO;
 	signal(SIGINT, SIG_IGN);
 	self = init(av[0], env);
-	interactive(self);
+
+	if (av[1])
+		fd = open_file(self, av[1]);
+	if (isatty(fd))
+		interactive(self);
+	else
+		non_interactive(self, fd);
 	status = self->_errno;
 	deinit(self);
 	return (status);

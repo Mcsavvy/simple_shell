@@ -19,8 +19,13 @@ char *getlines(int fd)
 	size_t offset, size;
 	int step;
 	ssize_t bytesread;
+	struct stat fdstat;
 
-	size = 1024;
+	fstat(fd, &fdstat);
+	if (fdstat.st_size == 0)
+		size = 1024;
+	else
+		size = fdstat.st_size + 1;
 	buffer = malloc(size);
 	offset = 0;
 	step = size;

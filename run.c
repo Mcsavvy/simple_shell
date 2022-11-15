@@ -100,7 +100,7 @@ int interactive(state *self)
 {
 	int l;
 	char *content;
-	char **lines;
+	char **parts;
 
 	for (; true; self->lineno++)
 	{
@@ -112,16 +112,16 @@ int interactive(state *self)
 			break;
 		}
 		self->content = content;
-		lines = split(content, ";", 0);
-		if (!lines)
+		parts = split(content, ";", 0);
+		if (!parts)
 		{
 			cleanup(self);
 			continue;
 		}
-		self->lines = lines;
-		for (l = 0; lines[l]; l++)
+		self->parts = parts;
+		for (l = 0; parts[l]; l++)
 		{
-			runline(self, lines[l]);
+			runline(self, parts[l]);
 		}
 		cleanup(self);
 	}
@@ -129,10 +129,49 @@ int interactive(state *self)
 }
 
 /**
+ * non_interactive - run shell in non-interactive mode
+ * all commands would be read from a file.
+ *
+ * @self: shell's state
+ * @fd: descriptor of file to read from
+ *
+ * Return: always 0
+ */
+int non_interactive(state *self, int fd)
+{
+	int l, i;
+	char *content, **lines, **parts;
+
+	content = getlines(fd);
+	if (!content)
+		return (0);
+	self->content = content;
+	lines = split(content, "\n", 0);
+	if (!lines)
+		return (0);
+	self->lines = lines;
+	for (l = 0; lines[l]; l++)
+	{
+		parts = split(lines[l], ";", 0);
+		if (!parts)
+			continue;
+		self->parts = parts;
+		for (i = 0; parts[i]; i++)
+		{
+			runline(self, parts[i]);
+		}
+		free(parts);
+		self->parts = NULL;
+	}
+	cleanup(self);
+	return (0);
+}
+
+/**
  * execute - execute a program in a child process
  * @program: path of the program to execute
  * @args: command line arguments to pass to the program
- * @env: the environme
+ * @env: the environment variables for this process
  * Return: the exit status of the child process
  */
 int execute(const char *program, char *args[], char *env[])
