@@ -101,9 +101,8 @@ int interactive(state *self)
 	int l;
 	char *content;
 	char **parts;
-	bool status;
-	
-	status = true;
+
+
 	for (; true; self->lineno++)
 	{
 		printout("($) ");
@@ -123,9 +122,7 @@ int interactive(state *self)
 		self->parts = parts;
 		for (l = 0; parts[l]; l++)
 		{
-			status = runalias(self, parts[l]);
-			if (status == false)
-				runline(self, parts[l]);
+			runline(self, parts[l]);
 		}
 		cleanup(self);
 	}
@@ -145,9 +142,8 @@ int non_interactive(state *self, int fd)
 {
 	int l, i;
 	char *content, **lines, **parts;
-	bool status;
 
-	status = true;
+
 	content = getlines(fd);
 	if (!content)
 		return (0);
@@ -164,9 +160,7 @@ int non_interactive(state *self, int fd)
 		self->parts = parts;
 		for (i = 0; parts[i]; i++)
 		{
-			status = runalias(self, parts[l]);
-			if (status == false)
-				runline(self, parts[i]);
+			runline(self, parts[i]);
 		}
 		free(parts);
 		self->parts = NULL;

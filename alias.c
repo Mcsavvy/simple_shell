@@ -102,52 +102,44 @@ int count_str(char **stri)
  * @line: the line to run
  * Return: true if it works or false if it fails
  */
-bool runalias(state *self, char *line)
+char **runalias(state *self, char **line)
 {
 
 	int j, count;
 	char **arguments, **tokens, *aliasi;
 	bool status;
 	size_t size, i;
+	node *alias;
 
-	tokens = split(line, "\t ", 0);
+	tokens = &line[1];
 	size = count_str(tokens);
 
-	aliasi = find_alias(self->aliases, *tokens);
-	if (!aliasi)
+	alias = get_node(self->aliases, line[0]);
+	if (!alias)
 	{	
-		free(aliasi);
-		return (false);
+		return (line);
 	}
-
+	aliasi = alias->val;
+	if (!(aliasi) || aliasi == NULL || aliasi == "")
+	{
+		free(alias);
+		return (line);
+	}
 	arguments = split(aliasi, "\t ", 0);
+	if (!tokens)
+	{
+		free(tokens);
+		return (arguments);
+	}
 	i = count_str(arguments);
 	size = i + 1;
-	for (j = 1; tokens[j] != NULL; j++)
+	for (j = 0; tokens[j] != NULL; j++)
 	{
 		appendStr(&arguments, &size, tokens[j], i);
-		size++;
 		i++;
 	}
 	appendStr(&arguments, &size, NULL, i);
-	self->tokens = arguments;
-	for (count = 0; arguments[count]; count++)
-	{
-		arguments[count] = replace(self, arguments[count]);
-	}
-	comment(arguments);
-	status = runbuiltin(self, arguments);
-	if (status == false)
-		status = runprogram(self, arguments);
-	if (status == false)
-	{
-		 fprinterr(format("%s: %d: %s: not found\n",
-			self->prog, self->lineno, arguments[0]));
-		self->_errno = EKEYEXPIRED;
-	}
-	free(arguments);
-	free(self->tokens);
-	self->tokens = NULL;
-	return (true);
+	free(alias);
+	return (arguments);
 }
 
