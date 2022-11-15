@@ -105,31 +105,31 @@ int count_str(char **stri)
 bool runalias(state *self, char *line)
 {
 
-	int i, j, count;
+	int j, count;
 	char **arguments, **tokens, *aliasi;
 	bool status;
-	size_t size, index;
+	size_t size, i;
 
 	tokens = split(line, "\t ", 0);
 	size = count_str(tokens);
 
 	aliasi = find_alias(self->aliases, *tokens);
 	if (!aliasi)
+	{	
+		free(aliasi);
 		return (false);
-/*
-	arguments = split(aliasi, "\t ", 0);
-	for (i = 0;  arguments[i] != NULL; i++)
-	{
-		;
 	}
+
+	arguments = split(aliasi, "\t ", 0);
+	i = count_str(arguments);
+	size = i + 1;
 	for (j = 1; tokens[j] != NULL; j++)
 	{
-		index = count_str(arguments);
-		size = index + 1;
-		appendStr(&arguments, &size, tokens[j], index);
+		appendStr(&arguments, &size, tokens[j], i);
+		size++;
 		i++;
 	}
-	appendStr(&arguments, &size, NULL, index);
+	appendStr(&arguments, &size, NULL, i);
 	self->tokens = arguments;
 	for (count = 0; arguments[count]; count++)
 	{
@@ -145,8 +145,9 @@ bool runalias(state *self, char *line)
 			self->prog, self->lineno, arguments[0]));
 		self->_errno = EKEYEXPIRED;
 	}
+	free(arguments);
 	free(self->tokens);
 	self->tokens = NULL;
-*/	return (true);
+	return (true);
 }
 
