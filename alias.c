@@ -116,7 +116,7 @@ bool runalias(state *self, char *line)
 	aliasi = find_alias(self->aliases, *tokens);
 	if (!aliasi)
 		return (false);
-
+/*
 	arguments = split(aliasi, "\t ", 0);
 	for (i = 0;  arguments[i] != NULL; i++)
 	{
@@ -147,6 +147,6 @@ bool runalias(state *self, char *line)
 	}
 	free(self->tokens);
 	self->tokens = NULL;
-	return (true);
+*/	return (true);
 }
 
