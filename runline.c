@@ -16,6 +16,8 @@ void runcommand(state *self, char **command)
 	if (command_found == false)
 		command_found = runprogram(self, command);
 	if (command_found == false)
+		command_found = runalias(self, command);
+	if (command_found == false)
 	{
 		fprinterr(format("%s: %d: %s: not found\n",
 			self->prog, self->lineno, command[0]));

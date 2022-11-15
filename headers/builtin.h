@@ -18,6 +18,7 @@ typedef exit_status(*builtincmd)(state *, char **);
  * @parts: an array of different parts of a line separated
  * by semicolon
  * @tokens: an array of tokens found in a line/part
+ * @command: and array of tokens gotten from parsing alias
  * @_errno: a number indicating the error of the last command ran
  * @lineno: the current line number
  * @fd: open file descriptor where commands are read from
@@ -38,6 +39,7 @@ struct state
 	char **lines;
 	char **parts;
 	char **tokens;
+	char **command;
 	node *env;
 	node *aliases;
 };

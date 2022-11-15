@@ -24,6 +24,7 @@ state *init(char *prog, char **env)
 	self->errno_buf = malloc(NCHARS(12));
 	self->pid_buf = format("%d", getpid());
 	self->parts = NULL;
+	self->command = NULL;
 	self->fd = STDIN_FILENO;
 
 	return (self);
@@ -47,9 +48,11 @@ void deinit(state *self)
 	free(self->lines);
 	free(self->tokens);
 	free(self->parts);
-	close(self->fd);
+	if (self->fd)
+		close(self->fd);
 	free(self->pid_buf);
 	free(self->errno_buf);
+	free(self->command);
 	free(self);
 }
 
@@ -72,6 +75,8 @@ void cleanup(state *self)
 	self->parts = NULL;
 	free(self->tokens);
 	self->tokens = NULL;
+	free(self->command);
+	self->command = NULL;
 }
 
 /**

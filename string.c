@@ -49,6 +49,25 @@ int _strlen(const char *s)
 }
 
 /**
+ * count_str - count the number of strings in a string array
+ *
+ * @stri: the string to be counted
+ *
+ * Return: the number of counted strings
+ */
+int count_str(char **stri)
+{
+	int i;
+
+	i = 0;
+	if (stri == NULL)
+		return (i);
+	for (i = 0; stri[i] != NULL; i++)
+		;
+	return (i);
+}
+
+/**
  * _strcmp - compares two strings
  * @s1: the string to be compared
  * @s2: the second string to be compared

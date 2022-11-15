@@ -41,7 +41,8 @@ int non_interactive(state *self, int fd);
 int execute(const char *program, char **args, char **env);
 int runline(state *self, char *line);
 bool runbuiltin(state *self, char **arguments);
-int runprogram(state *self, char **arguments);
+bool runprogram(state *self, char **arguments);
+bool runalias(state *self, char **command);
 
 /*tokenizefile*/
 char ***tokenizefiles(char *line);

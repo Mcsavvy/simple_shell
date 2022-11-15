@@ -66,3 +66,48 @@ exit_status shellalias(state *self, char **arguments)
 	}
 	return (status);
 }
+
+/**
+ * runalias - runs an alias
+ *
+ * @self: the shell's state
+ * @command: the command to run
+ * Return: true if it works or false if it fails
+ */
+bool runalias(state *self, char **command)
+{
+
+	int j;
+	char **arguments, **tokens, *aliasi;
+	bool status;
+	size_t size, i;
+	node *alias;
+
+	tokens = &command[1];
+
+	alias = get_node(self->aliases, command[0]);
+	if (!alias)
+		return (false);
+	if (!alias->val || !*(alias->val))
+		return (false);
+
+	aliasi = alias->val;
+	arguments = split(aliasi, "\t ", 0);
+	if (!arguments || !arguments[0])
+		return (false);
+	self->command = arguments;
+	i = count_str(arguments);
+	size = i + 1;
+	for (j = 0; tokens[j] != NULL; j++)
+	{
+		appendStr(&arguments, &size, tokens[j], i);
+		i++;
+	}
+	appendStr(&arguments, &size, NULL, i);
+	status = runbuiltin(self, arguments);
+	if (!status)
+		status = runprogram(self, arguments);
+	free(arguments);
+	self->command = NULL;
+	return (status);
+}
