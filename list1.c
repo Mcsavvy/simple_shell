@@ -13,7 +13,7 @@ void print_list(node *head, bool quote)
 	if (!head)
 		return;
 	if (quote)
-		fprintout(format("%s=%s\n", head->var, head->val));
+		fprintout(format("%s='%s'\n", head->var, head->val));
 	else
 		fprintout(format("%s=%s\n", head->var, head->val));
 	print_list(head->next, quote);

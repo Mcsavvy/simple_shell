@@ -12,6 +12,7 @@ int get_equal_sign(const char *s)
 {
 	int i, j;
 
+	j = 0;
 	for (i = 0; s[i]; i++)
 	{
 		if (s[i] == '=')
@@ -67,12 +68,8 @@ exit_status shellalias(state *self, char **arguments)
 			}
 			else
 			{
-				if (should_quote(alias->val))
-					fprintout(format("%s='%s'\n",
-						alias->var, alias->val));
-				else
-					fprintout(format("%s=%s\n",
-						alias->var, alias->val));
+				fprintout(format("%s='%s'\n",
+					alias->var, alias->val));
 			}
 		}
 		else

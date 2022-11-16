@@ -30,7 +30,8 @@ char *remove_quotes(char *string);
 
 /* line */
 char *getlines(int fd);
-char **split(char *string, char *delimiter, unsigned int max, bool group_quote);
+char **split(char *string, char *delimiter,
+		unsigned int max, bool group_quote);
 
 /* find */
 char *findcmd(const char *command, const char *PATH);
