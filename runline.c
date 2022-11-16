@@ -12,6 +12,8 @@ void runcommand(state *self, char **command)
 {
 	bool command_found;
 
+	if (!command[0])
+		return;
 	command_found = runbuiltin(self, command);
 	if (command_found == false)
 		command_found = runprogram(self, command);
@@ -73,24 +75,26 @@ int get_logical(char **tokens, int index, int *next)
  */
 int runline(state *self, char *line)
 {
-	char **tokens, **command;
-	int index, next, op, i;
+	char **tokens = split(line, "\t ", 0), **command;
+	int index = 0, next, op, i;
 
-	tokens = split(line, "\t ", 0);
 	if (!tokens)
 		return (0);
 	self->tokens = tokens;
-	index = 0;
-
 	for (i = 0; tokens[i]; i++)
 		tokens[i] = replace(self, tokens[i]);
-	comment(tokens);
 	command = tokens + index;
 	op = get_logical(tokens, index, &next);
-	if (command[0])
-		runcommand(self, command);
+	if (!command[0] && op)
+	{
+		fprinterr(format("%s: %d: Syntax error: \"%s\" unexpected\n",
+			self->prog, self->lineno, op == 1 ? "&&" : "||"));
+		free(self->tokens);
+		self->tokens = NULL;
+		return (2);
+	}
+	runcommand(self, command);
 	index = next;
-
 	while (op)
 	{
 		if ((op == 2 && !self->_errno) ||
@@ -102,11 +106,9 @@ int runline(state *self, char *line)
 		}
 		command = tokens + index;
 		op = get_logical(tokens, index, &next);
-		if (command[0])
-			runcommand(self, command);
+		runcommand(self, command);
 		index = next;
 	}
-
 	free(self->tokens);
 	self->tokens = NULL;
 	return (0);
