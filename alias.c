@@ -10,11 +10,26 @@
  */
 int get_equal_sign(const char *s)
 {
-	int i;
+	int i, j;
 
+	j = 0;
 	for (i = 0; s[i]; i++)
+	{
 		if (s[i] == '=')
-			return (i);
+		{
+
+			if (s[i + 1] == 39)
+			{
+				j = i;
+				break;
+			}
+		}
+	}
+	for (i = 0; s[i]; i++)
+	{
+		if (s[i] == 39 && s[i - 1] != s[j] && i > j)
+			return (j);
+	}
 	return (0);
 }
 
@@ -58,7 +73,7 @@ exit_status shellalias(state *self, char **arguments)
 					fprintout(format("%s='%s'\n",
 						alias->var, alias->val));
 				else
-					fprintout(format("%s=%s\n",
+					fprintout(format("%s='%s'\n",
 						alias->var, alias->val));
 			}
 		}
