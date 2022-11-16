@@ -7,7 +7,7 @@
  */
 int _env(node *env)
 {
-	print_list(env);
+	print_list(env, false);
 	return (0);
 
 }
