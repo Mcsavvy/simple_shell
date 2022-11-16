@@ -25,7 +25,6 @@ typedef exit_status(*builtincmd)(state *, char **);
  * @prog: the program name used to start the shell
  * @pid_buf: a buffer that'll be used to hold the program's pid
  * @errno_buf: a buffer that'll be used to hold the program's errno
- * @pid: the process ID of the shell
  */
 struct state
 {

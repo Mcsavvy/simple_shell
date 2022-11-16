@@ -15,8 +15,9 @@ exit_status shellexit(state *self, char **arguments)
 
 	if (arg == NULL)
 	{
+		status = self->_errno;
 		deinit(self);
-		exit(0);
+		exit(status);
 	}
 	if (checkatoi(arg) == false)
 	{
