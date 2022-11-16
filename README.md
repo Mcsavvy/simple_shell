@@ -13,7 +13,7 @@ It contains all the header files we should have been constantly declaring to uss
 
 * [header](./headers/) :file_folder:
  <details>
-  <summary>It contains other header files that were used in declaring</summary>
+  <summary>It contains other header files that were used in declaring related function prototypes</summary>
 
   * [builtin.h](./headers/builtin.h) :scroll: </br>
     Contains the header prototypes for the builtins
@@ -55,7 +55,7 @@ It contains all the header files we should have been constantly declaring to uss
   * Use **_gcc *.c -o hsh_** to compile
   * THen run **./hsh**
   * Ignore any .swo, .swp and any other file that is not an executable, C or header file
-  * This shell is experimental meaning that you use at your own risk
+  * This shell has been tested and trusted. It comes with some builtins though
 </details>
 
 ## AUTHORS

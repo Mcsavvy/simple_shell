@@ -152,6 +152,7 @@ int non_interactive(state *self, int fd)
 	self->lines = lines;
 	for (l = 0; lines[l]; l++)
 	{
+		self->lineno = l + 1;
 		parts = split(lines[l], ";", 0);
 		if (!parts)
 			continue;
