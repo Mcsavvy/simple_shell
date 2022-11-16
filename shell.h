@@ -24,7 +24,7 @@ void prompt(state *self);
 
 /* quote */
 int findquote(char *str, char quote);
-void comment(char *av[]);
+void comment(char *string);
 bool should_quote(const char *string);
 char *remove_quotes(char *string);
 

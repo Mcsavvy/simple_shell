@@ -112,6 +112,7 @@ int interactive(state *self)
 			break;
 		}
 		self->content = content;
+		comment(content);
 		parts = split(content, ";", 0, true);
 		if (!parts)
 		{
@@ -153,6 +154,7 @@ int non_interactive(state *self, int fd)
 	for (l = 0; lines[l]; l++)
 	{
 		self->lineno = l + 1;
+		comment(lines[l]);
 		parts = split(lines[l], ";", 0, true);
 		if (!parts)
 			continue;

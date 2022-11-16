@@ -92,20 +92,20 @@ bool should_quote(const char *string)
 /**
  * comment - Identifies a comment in command line
  *
- * @av: the command line arguments
+ * @string: the command line string
  * Return: Nothing. It is void
  */
-void comment(char *av[])
+void comment(char *string)
 {
 	int j;
 
-	if (av == NULL)
+	if (string == NULL)
 		return;
-	for (j = 0; av[j]; j++)
+	for (j = 0; string[j]; j++)
 	{
-		if (_strcmp(av[j], "#") == 0)
+		if (string[j] == '#')
 		{
-			av[j] = NULL;
+			string[j] = '\0';
 			break;
 		}
 	}
