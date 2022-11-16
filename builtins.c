@@ -133,10 +133,10 @@ exit_status shellcd(state *self, char **arguments)
 	}
 	else if (path && path[0] == '-')
 	{
-		fprinterr(format(
-		"%s: %d: cd: Illegal option %s\n",
-		self->prog, self->lineno, path
-		));
+		fprinterr(format("%s: %d: cd: Illegal option -",
+			self->prog, self->lineno));
+		write(STDIN_FILENO, path + 1, 1);
+		printout("\n");
 		return (2);
 	}
 	if (stat(path, &dir) == 0 && S_ISDIR(dir.st_mode)
