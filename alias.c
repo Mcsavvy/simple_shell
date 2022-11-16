@@ -19,6 +19,8 @@ int get_equal_sign(const char *s)
 }
 
 
+
+
 /**
  * shellexit - exits the shell
  *
@@ -29,15 +31,13 @@ int get_equal_sign(const char *s)
  */
 exit_status shellalias(state *self, char **arguments)
 {
-	int eq, i, status;
+	int eq, i, status = 0;
 	char *token;
 	node *alias;
 
-	status = 0;
-
 	if (!arguments[0])
 	{
-		print_list(self->aliases);
+		print_list(self->aliases, true);
 		return (0);
 	}
 	for (i = 0; arguments[i]; i++)
@@ -54,14 +54,19 @@ exit_status shellalias(state *self, char **arguments)
 			}
 			else
 			{
-				fprintout(format("%s=%s\n",
-					alias->var, (!alias->val[0]) ? "''" : alias->val));
+				if (should_quote(alias->val))
+					fprintout(format("%s='%s'\n",
+						alias->var, alias->val));
+				else
+					fprintout(format("%s=%s\n",
+						alias->var, alias->val));
 			}
 		}
 		else
 		{
 			token[eq] = '\0';
-			set_node(&(self->aliases), token, &token[eq + 1]);
+			set_node(&(self->aliases), token,
+				remove_quotes(&token[eq + 1]));
 		}
 	}
 	return (status);
@@ -84,15 +89,15 @@ bool runalias(state *self, char **command)
 	node *alias;
 
 	tokens = &command[1];
-
 	alias = get_node(self->aliases, command[0]);
 	if (!alias)
 		return (false);
 	if (!alias->val || !*(alias->val))
 		return (false);
 
-	aliasi = alias->val;
-	arguments = split(aliasi, "\t ", 0);
+	aliasi = _strdup(alias->val);
+	self->buf = aliasi;
+	arguments = split(aliasi, "\t ", 0, true);
 	if (!arguments || !arguments[0])
 		return (false);
 	self->command = arguments;
@@ -108,6 +113,8 @@ bool runalias(state *self, char **command)
 	if (!status)
 		status = runprogram(self, arguments);
 	free(arguments);
+	free(self->buf);
 	self->command = NULL;
+	self->buf = NULL;
 	return (status);
 }

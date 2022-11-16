@@ -75,7 +75,7 @@ int get_logical(char **tokens, int index, int *next)
  */
 int runline(state *self, char *line)
 {
-	char **tokens = split(line, "\t ", 0), **command;
+	char **tokens = split(line, "\t ", 0, true), **command;
 	int index = 0, next, op, i;
 
 	if (!tokens)

@@ -25,10 +25,12 @@ void prompt(state *self);
 /* quote */
 int findquote(char *str, char quote);
 void comment(char *av[]);
+bool should_quote(const char *string);
+char *remove_quotes(char *string);
 
 /* line */
 char *getlines(int fd);
-char **split(char *string, char *delimiter, unsigned int max);
+char **split(char *string, char *delimiter, unsigned int max, bool group_quote);
 
 /* find */
 char *findcmd(const char *command, const char *PATH);

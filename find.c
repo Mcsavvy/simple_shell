@@ -42,7 +42,7 @@ char *findcmd(const char *command, const char *PATH)
 
 	cmd = NULL;
 	PATHCPY = _strdup(PATH);
-	dirs = split(PATHCPY, ":", 0);
+	dirs = split(PATHCPY, ":", 0, false);
 	if (!dirs)
 		return (NULL);
 

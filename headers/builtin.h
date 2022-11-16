@@ -24,6 +24,7 @@ typedef exit_status(*builtincmd)(state *, char **);
  * @fd: open file descriptor where commands are read from
  * @prog: the program name used to start the shell
  * @pid_buf: a buffer that'll be used to hold the program's pid
+ * @buf: a free buffer that any function can make use of
  * @errno_buf: a buffer that'll be used to hold the program's errno
  */
 struct state
@@ -34,6 +35,7 @@ struct state
 	char *prog;
 	char *pid_buf;
 	char *errno_buf;
+	char *buf;
 	char *content;
 	char **lines;
 	char **parts;

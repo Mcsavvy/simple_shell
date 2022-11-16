@@ -25,7 +25,8 @@ state *init(char *prog, char **env)
 	self->pid_buf = format("%d", getpid());
 	self->parts = NULL;
 	self->command = NULL;
-	self->fd = STDIN_FILENO;
+	self->fd = 0;
+	self->buf = NULL;
 
 	return (self);
 }
@@ -53,6 +54,7 @@ void deinit(state *self)
 	free(self->pid_buf);
 	free(self->errno_buf);
 	free(self->command);
+	free(self->buf);
 	free(self);
 }
 

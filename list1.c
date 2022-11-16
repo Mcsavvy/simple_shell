@@ -6,14 +6,19 @@
  *
  * @head: the head of the linked list
  *
+ * @quote: print quote around text if text is more than one word
+ *
  * Return: nothing
  */
-void print_list(node *head)
+void print_list(node *head, bool quote)
 {
 	if (!head)
 		return;
-	fprintout(format("%s=%s\n", head->var, head->val));
-	print_list(head->next);
+	if (quote && should_quote(head->val))
+		fprintout(format("%s='%s'\n", head->var, head->val));
+	else
+		fprintout(format("%s=%s\n", head->var, head->val));
+	print_list(head->next, quote);
 }
 
 
