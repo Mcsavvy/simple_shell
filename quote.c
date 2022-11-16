@@ -102,11 +102,10 @@ void comment(char *string)
 	if (string == NULL)
 		return;
 	for (j = 0; string[j]; j++)
-	{
 		if (string[j] == '#')
-		{
-			string[j] = '\0';
-			break;
-		}
-	}
+			if (j == 0 || string[j - 1] == ' ')
+			{
+				string[j] = '\0';
+				break;
+			}
 }
