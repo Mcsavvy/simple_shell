@@ -10,25 +10,13 @@
  */
 int get_equal_sign(const char *s)
 {
-	int i, j;
+	int i = 0;
 
-	j = 0;
-	for (i = 0; s[i]; i++)
-	{
+	if (s[0] == '=')
+		i = 1;
+	for (; s[i]; i++)
 		if (s[i] == '=')
-		{
-			if (s[i + 1] == 39)
-			{
-				j = i;
-				break;
-			}
-		}
-	}
-	for (i = 0; s[i]; i++)
-	{
-		if (s[i] == 39 && s[i - 1] != s[j] && i > j)
-			return (j);
-	}
+			return (i);
 	return (0);
 }
 
@@ -57,8 +45,10 @@ exit_status shellalias(state *self, char **arguments)
 	for (i = 0; arguments[i]; i++)
 	{
 		token = arguments[i];
+		if (!token[0])
+			break;
 		eq = get_equal_sign(token);
-		if (!eq)
+		if (eq == 0)
 		{
 			alias = get_node(self->aliases, token);
 			if (!alias)
@@ -67,10 +57,8 @@ exit_status shellalias(state *self, char **arguments)
 				status = 1;
 			}
 			else
-			{
 				fprintout(format("%s='%s'\n",
 					alias->var, alias->val));
-			}
 		}
 		else
 		{
