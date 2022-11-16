@@ -14,7 +14,7 @@ void print_list(node *head, bool quote)
 {
 	if (!head)
 		return;
-	if (quote && should_quote(head->val))
+	if (quote)
 		fprintout(format("%s='%s'\n", head->var, head->val));
 	else
 		fprintout(format("%s=%s\n", head->var, head->val));

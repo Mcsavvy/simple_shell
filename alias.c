@@ -69,12 +69,8 @@ exit_status shellalias(state *self, char **arguments)
 			}
 			else
 			{
-				if (should_quote(alias->val))
-					fprintout(format("%s='%s'\n",
-						alias->var, alias->val));
-				else
-					fprintout(format("%s='%s'\n",
-						alias->var, alias->val));
+				fprintout(format("%s='%s'\n",
+					alias->var, alias->val));
 			}
 		}
 		else
