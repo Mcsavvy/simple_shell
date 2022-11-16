@@ -44,7 +44,7 @@ exit_status shellexit(state *self, char **arguments)
 exit_status shellenv(state *self, char **arguments)
 {
 	(void)arguments;
-	print_list(self->env);
+	print_list(self->env, false);
 	return (0);
 }
 
