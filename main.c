@@ -99,7 +99,7 @@ int open_file(state *self, char *path)
 			"%s: %d: cannot open %s: No such file\n",
 			self->prog, 0, path));
 		deinit(self);
-		exit(2);
+		exit(127);
 	}
 	if (access(path, R_OK) == -1)
 	{
@@ -108,7 +108,7 @@ int open_file(state *self, char *path)
 				"%s: %d: cannot open %s: Permission denied\n",
 				self->prog, 0, path));
 			deinit(self);
-			exit(2);
+			exit(127);
 		}
 	}
 	fd = open(path, O_RDONLY);
