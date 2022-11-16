@@ -10,11 +10,24 @@
  */
 int get_equal_sign(const char *s)
 {
-	int i;
+	int i, j;
 
 	for (i = 0; s[i]; i++)
+	{
 		if (s[i] == '=')
-			return (i);
+		{
+			if (s[i + 1] == 39)
+			{
+				j = i;
+				break;
+			}
+		}
+	}
+	for (i = 0; s[i]; i++)
+	{
+		if (s[i] == 39 && s[i - 1] != s[j] && i > j)
+			return (j);
+	}
 	return (0);
 }
 

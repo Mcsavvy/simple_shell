@@ -5,17 +5,15 @@
  * -> VAR=VAL
  *
  * @head: the head of the linked list
- *
- * @quote: print quote around text if text is more than one word
- *
+ * @quote: checks if its env or alias to be printed
  * Return: nothing
  */
 void print_list(node *head, bool quote)
 {
 	if (!head)
 		return;
-	if (quote && should_quote(head->val))
-		fprintout(format("%s='%s'\n", head->var, head->val));
+	if (quote)
+		fprintout(format("%s=%s\n", head->var, head->val));
 	else
 		fprintout(format("%s=%s\n", head->var, head->val));
 	print_list(head->next, quote);
