@@ -79,7 +79,6 @@ exit_status shellalias(state *self, char **arguments)
  */
 bool runalias(state *self, char **command)
 {
-
 	int j;
 	char **arguments, **tokens, *aliasi;
 	bool status;
@@ -88,9 +87,7 @@ bool runalias(state *self, char **command)
 
 	tokens = &command[1];
 	alias = get_node(self->aliases, command[0]);
-	if (!alias)
-		return (false);
-	if (!alias->val || !*(alias->val))
+	if (!alias || !alias->val || !alias->val[0])
 		return (false);
 
 	aliasi = _strdup(alias->val);
@@ -102,16 +99,15 @@ bool runalias(state *self, char **command)
 	i = count_str(arguments);
 	size = i + 1;
 	for (j = 0; tokens[j] != NULL; j++)
-	{
-		appendStr(&arguments, &size, tokens[j], i);
-		i++;
-	}
+		appendStr(&arguments, &size, tokens[j], i++);
 	appendStr(&arguments, &size, NULL, i);
 	status = runbuiltin(self, arguments);
 	if (!status)
 		status = runprogram(self, arguments);
+	if (!status)
+		status = runalias(self, arguments);
 	free(arguments);
-	free(self->buf);
+	free(aliasi);
 	self->command = NULL;
 	self->buf = NULL;
 	return (status);
