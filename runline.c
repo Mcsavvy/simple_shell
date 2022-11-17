@@ -89,9 +89,9 @@ int runline(state *self, char *line)
 	{
 		fprinterr(format("%s: %d: Syntax error: \"%s\" unexpected\n",
 			self->prog, self->lineno, op == 1 ? "&&" : "||"));
-		free(self->tokens);
-		self->tokens = NULL;
-		return (2);
+		self->tokens = (free(self->tokens), NULL);
+		self->_errno = 2;
+		return (0);
 	}
 	runcommand(self, command);
 	index = next;
