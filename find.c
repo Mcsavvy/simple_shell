@@ -44,8 +44,10 @@ char *findcmd(const char *command, const char *PATH)
 	PATHCPY = _strdup(PATH);
 	dirs = split(PATHCPY, ":", 0, false);
 	if (!dirs)
+	{
+		free(PATHCPY);
 		return (NULL);
-
+	}
 	for (i = 0; dirs[i]; i++)
 	{
 		dirname = dirs[i];

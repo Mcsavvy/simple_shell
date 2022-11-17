@@ -68,6 +68,8 @@ exit_status shellsetenv(state *self, char **arguments)
 		printerr("setenv: VALUE not supplied\n");
 		return (2);
 	}
+	if (!_strcmp(arguments[1], "PATH") && !arguments[1][0])
+		return (0);
 	if (!set_node(&(self->env), arguments[0], arguments[1]))
 	{
 		perror("setenv");
@@ -91,7 +93,8 @@ exit_status shellunsetenv(state *self, char **arguments)
 		printerr("unsetenv: VARIABLE missing\n");
 		return (1);
 	}
-	if (!_strcmp(arguments[0], "HOME"))
+	if (!_strcmp(arguments[0], "HOME") ||
+			!_strcmp(arguments[0], "PATH"))
 		return (0);
 	if (!get_node(self->env, arguments[0]))
 	{

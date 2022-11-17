@@ -11,9 +11,12 @@
 void runcommand(state *self, char **command)
 {
 	bool command_found;
+	int i;
 
 	if (!command[0])
 		return;
+	for (i = 0; command[i]; i++)
+		command[i] = remove_quotes(command[i]);
 	command_found = runbuiltin(self, command);
 	if (command_found == false)
 		command_found = runprogram(self, command);
