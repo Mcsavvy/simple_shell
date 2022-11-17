@@ -91,6 +91,8 @@ exit_status shellunsetenv(state *self, char **arguments)
 		printerr("unsetenv: VARIABLE missing\n");
 		return (1);
 	}
+	if (!_strcmp(arguments[0], "HOME"))
+		return (0);
 	if (!get_node(self->env, arguments[0]))
 	{
 		fprinterr(format("unsetenv: %s does not exist\n", arguments[0]));
@@ -117,16 +119,20 @@ exit_status shellcd(state *self, char **arguments)
 	struct stat dir;
 	char *cwd = getcwd(NULL, 0);
 	char *path = arguments[0];
-	node *pwd = set_default(&(self->env), "PWD", cwd);
+	node *pwd = set_default(&(self->env), "PWD", cwd), *h;
 
 	set_default(&(self->env), "OLDPWD", cwd);
-	set_default(&(self->env), "HOME", "/root");
 	free(cwd);
 	cwd = NULL;
 
 	if (!path || !_strcmp(path, "~"))
-		path = get_node(self->env, "HOME")->val;
-	else if (!_strcmp(path, "-"))
+	{
+		h = get_node(self->env, "HOME");
+		if (!h)
+			return (0);
+		path = h->val;
+	}
+	else if (path && !_strcmp(path, "-"))
 	{
 		path = get_node(self->env, "OLDPWD")->val;
 		printout(path),	printout("\n");
