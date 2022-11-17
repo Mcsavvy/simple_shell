@@ -93,30 +93,14 @@ int open_file(state *self, char *path)
 {
 	int fd;
 
-	if (access(path, F_OK) == -1)
-	{
-		fprinterr(format(
-			"%s: %d: cannot open %s: No such file\n",
-			self->prog, 0, path));
-		deinit(self);
-		exit(127);
-	}
-	if (access(path, R_OK) == -1)
-	{
-		{
-			fprinterr(format(
-				"%s: %d: cannot open %s: Permission denied\n",
-				self->prog, 0, path));
-			deinit(self);
-			exit(127);
-		}
-	}
 	fd = open(path, O_RDONLY);
+
 	if (fd == -1)
 	{
-		perror(self->prog);
+		fprinterr(format("%s: 0: Can't open %s\n",
+			self->prog, path));
 		deinit(self);
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
 	self->fd = fd;
 	return (fd);
